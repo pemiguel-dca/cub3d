@@ -3,15 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/09 17:07:36 by pnobre-m         ###   ########.fr       */
+/*   Updated: 2023/05/09 21:17:45 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "libft/libft.h"
 #include "cub3d.h"
 
 static char *generate_buffer(int fd, char *buffer, size_t *rows, size_t *cols)
@@ -33,9 +31,7 @@ static char *generate_buffer(int fd, char *buffer, size_t *rows, size_t *cols)
 		return (generate_buffer(fd, join, rows, cols));
 	}
 	else
-	{
 		return (generate_buffer(fd, line, rows, cols));
-	}
 }
 
 t_game	generate_game(int fd)
@@ -64,4 +60,9 @@ void	free_game(t_game *game)
 		i += 1;
 	}
 	free(game->buffer);
+	if (game->mlx && game->win)
+	{
+		mlx_destroy_window(game->mlx, game->win);
+		free(game->mlx);
+	}
 }

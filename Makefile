@@ -13,7 +13,6 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(MAKE) -C libft
-	$(MAKE) -C mlx
 	$(CC) $(C_FLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
 
 clean:

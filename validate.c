@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:26:45 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/09 17:08:02 by pnobre-m         ###   ########.fr       */
+/*   Updated: 2023/05/09 21:50:58 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
 #include "cub3d.h"
 
-#include <stdio.h>
 static bool	verify_char(char to_verify)
 {
 	size_t	i;
@@ -28,6 +26,49 @@ static bool	verify_char(char to_verify)
 	return (false);
 }
 
+static bool	validate_rows(const t_game *game)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < game->rows)
+	{
+		if (game->buffer[0][i] != '1')
+			return (false);
+		i += 1;
+	}
+	i = 0;
+	while (i < game->rows)
+	{
+		if (game->buffer[game->cols - 1][i] != '1')
+			return (false);
+		i += 1;
+	}
+	return (true);
+}
+
+static bool	validate_cols(const t_game *game)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < game->cols)
+	{
+		if (game->buffer[i][0] != '1')
+			return (false);
+		i += 1;
+	}
+	i = 0;
+	while (i < game->cols)
+	{
+		if (game->buffer[i][game->rows - 1] != '1')
+			return (false);
+		i += 1;
+	}
+	return (true);
+}
+
+/*Function does not work as expected (can't check the last col)
 static bool	validate_bounds(const t_game *game)
 {
 	size_t	i;
@@ -55,8 +96,8 @@ static bool	validate_bounds(const t_game *game)
 	}
 	return (true);
 }
+*/
 
-#include <stdio.h>
 bool	is_valid_map(t_game *game)
 {
 	size_t	i;
@@ -74,8 +115,7 @@ bool	is_valid_map(t_game *game)
 		}
 		i += 1;
 	}
-	if (!validate_bounds(game))
+	if (!validate_rows(game) || !validate_cols(game))
 		return (false);
 	return (true);
 }
-

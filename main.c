@@ -1,17 +1,27 @@
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/09 21:05:05 by pemiguel          #+#    #+#             */
+/*   Updated: 2023/05/09 21:16:18 by pemiguel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
-#include "mlx.h"
 
-#define EXTENSION "cub"
-
-static void	start_window(t_game *game)
+static int	start_window(t_game *game)
 {
 	game->mlx = mlx_init();
+	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, WIN_NAME);
+	if (!game->mlx || !game->win)
+	{
+		printf("Error creating the window");
+		return (EXIT_FAILURE);		
+	}
+	return (EXIT_SUCCESS);
 }
 
 int	main(int argc, char **argv)
@@ -49,7 +59,7 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	start_window(&game);
-
+	
 	free_game(&game);
 	close(fd);
 }
