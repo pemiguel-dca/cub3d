@@ -2,7 +2,7 @@
 # define CUB3D_H
 
 #include "libft/libft.h"
-#include "mlx.h"
+#include "mlx/mlx.h"
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdbool.h>
@@ -33,7 +33,7 @@ static inline bool	has_extension(const char *path)
 	char	*sub;
 
 	sub = ft_strrchr(path, '.');
-	if (!sub || ft_strlen(sub + 1) != sizeof(EXTENSION) - 1 
+	if (!sub || ft_strlen(sub + 1) != sizeof(EXTENSION) - 1
 		|| ft_strncmp(sub + 1, EXTENSION, sizeof(EXTENSION) - 1))
 		return (false);
 	return (true);

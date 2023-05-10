@@ -3,7 +3,7 @@ OBJS=$(SRCS:.c=.o)
 
 CC=cc
 C_FLAGS=-Wall -Wextra -Werror -fsanitize=leak
-MLX_FLAGS=-L ./mlx -lmlx -Ilmlx -lXext -lX11
+MLX_FLAGS=-L mlx -lmlx -Ilmlx -lXext -lX11 -lbsd
 RM=rm -f
 
 LIBFT=libft/libft.a
@@ -13,10 +13,12 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(MAKE) -C libft
+	$(MAKE) -C mlx
 	$(CC) $(C_FLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
 
 clean:
 	$(MAKE) clean -C libft
+	$(MAKE) clean -C mlx
 	$(RM) $(OBJS)
 
 fclean: clean

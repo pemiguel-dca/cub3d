@@ -12,6 +12,8 @@
 
 #include "cub3d.h"
 
+/*Provavelmente a verificacao esta toda mal pois o mapa pode nao ter o mesmo tamanho para cada linha
+Logo a condicao i < game->cols nem sempre e verdade*/
 static bool	verify_char(char to_verify)
 {
 	size_t	i;
@@ -67,36 +69,6 @@ static bool	validate_cols(const t_game *game)
 	}
 	return (true);
 }
-
-/*Function does not work as expected (can't check the last col)
-static bool	validate_bounds(const t_game *game)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	while (i < game->cols)
-	{
-		j = 0;
-		while (j < game->rows)
-		{
-			if (
-				(
-					i == 0 ||
-					j == 0 ||
-					i == game->rows ||
-					j == game->cols
-				) &&
-				game->buffer[i][j] != '1'
-			)
-				return (false);
-			j += 1;
-		}
-		i += 1;
-	}
-	return (true);
-}
-*/
 
 bool	is_valid_map(t_game *game)
 {
