@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:05:05 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/09 21:16:18 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/11 15:07:33 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ static int	start_window(t_game *game)
 	if (!game->mlx || !game->win)
 	{
 		printf("Error creating the window");
-		return (EXIT_FAILURE);		
+		return (EXIT_FAILURE);
 	}
+	game->img_ptr = mlx_new_image(game->mlx, WIDTH, HEIGHT);
+	game->img_data = mlx_get_data_addr(game->img_ptr, &game->bpp, &game->size_line, &game->endian);
 	return (EXIT_SUCCESS);
 }
 
@@ -41,7 +43,7 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	game = generate_game(fd);
-
+	parse_map(&game);
 	for (int i = 0; i < game.cols; ++i)
 	{
 		for (int j = 0; j < game.rows; ++j)
@@ -59,7 +61,9 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	start_window(&game);
-	
+	mlx_key_hook(game.win, &close_window, &game);
+	mlx_hook(game.win, 17, 0, &exit, 0); //top_right 'x'
+	mlx_loop(game.mlx);
 	free_game(&game);
 	close(fd);
 }

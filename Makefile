@@ -1,4 +1,4 @@
-SRCS=main.c game.c validate.c
+SRCS=main.c game.c validate.c close_game.c parse_map.c
 OBJS=$(SRCS:.c=.o)
 
 CC=cc
@@ -25,7 +25,8 @@ fclean: clean
 	$(MAKE) fclean -C libft
 	$(RM) $(NAME)
 
-run: all clean
+run: re
 	./$(NAME) map.cub
+	$(MAKE) clean -s
 
 re: fclean all

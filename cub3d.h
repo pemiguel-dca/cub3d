@@ -15,18 +15,32 @@
 #define HEIGHT 600
 #define WIN_NAME "cub3D"
 
+/*KEY CODES*/
+
+#define ESC 65307
+#define LEFT_ARROW 65361
+#define RIGTH_ARROW 65363
+#define W 119
+#define A 97
+#define S 115
+#define D 100
+
 typedef struct {
 	unsigned int	rows;
 	unsigned int	cols;
 	char			**buffer;
 	void			*mlx;
 	void			*win;
+	int				bpp;
+	int				size_line;
+	int				endian;
+	void			*img_ptr;
+	char			*img_data;
 }	t_game;
 
 t_game	generate_game(int fd);
 void	free_game(t_game *game);
 bool	is_valid_map(t_game *game);
-
 
 static inline bool	has_extension(const char *path)
 {
@@ -39,4 +53,9 @@ static inline bool	has_extension(const char *path)
 	return (true);
 }
 
+/*close_game.c*/
+int	close_window(int key, t_game *game);
+
+/*parse_map.c*/
+void	parse_map(t_game *game);
 #endif // CUB3D_H
