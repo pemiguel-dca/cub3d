@@ -1,46 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_map.c                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 14:59:06 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/13 18:14:38 by pemiguel         ###   ########.fr       */
+/*   Created: 2023/05/13 15:16:06 by pemiguel          #+#    #+#             */
+/*   Updated: 2023/05/13 15:16:44 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
+#include <stdint.h>
 
-static void	trim_spaces(char *str)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (!ft_isspace(str[i]))
-		{
-			str[j] = str[i];
-			j += 1;
-		}
-		i += 1;
-	}
-	str[j] = '\0';
-}
-
-void	parse_map(t_game *game)
+int	ft_strcmp(char *s1, char *s2)
 {
 	size_t	i;
 
 	i = 0;
-	if (!game->buffer)
-		return ;
-	while (game->buffer[i])
+	while (s1[i] || s2[i])
 	{
-		trim_spaces(game->buffer[i]);
-		i += 1;
+		if (s1[i] != s2[i])
+			return ((uint8_t)(s1[i]) - (uint8_t)(s2[i]));
+		i++;
 	}
+	return (0);
 }

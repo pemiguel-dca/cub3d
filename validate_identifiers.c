@@ -1,0 +1,94 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validate_identifiers.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/13 16:13:57 by pemiguel          #+#    #+#             */
+/*   Updated: 2023/05/13 17:58:56 by pemiguel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3d.h"
+
+static void	free_stuff(char **stuff)
+{
+	size_t	i;
+
+	i = 0;
+	while (stuff[i])
+	{
+		free(stuff[i]);
+		i += 1;
+	}
+	free(stuff);
+}
+
+static bool	validate_rgb_codes(char *str)
+{
+	char	**rgb_codes;
+	size_t	i;
+
+	rgb_codes = ft_split(str, ',');
+	i = 0;
+	while (rgb_codes[i])
+	{
+		if (ft_atoi(rgb_codes[i]) < 0 || ft_atoi(rgb_codes[i]) > 255)
+		{
+			free_stuff(rgb_codes);
+			return (false);
+		}
+		i += 1;
+	}
+	free_stuff(rgb_codes);
+	return (true);
+}
+
+static size_t get_len(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] && !ft_isspace(str[i]))
+		i += 1;
+	return (i);
+}
+
+static char	**get_types(t_game *game)
+{
+	char	**types;
+	size_t	i;
+
+	types = malloc((N_TYPES + 1) * sizeof(char *));
+	i = 0;
+	while (game->identifiers[i])
+	{
+		types[i] = ft_substr(game->identifiers[i], 0, get_len(game->identifiers[i]));
+		i += 1;
+	}
+	types[i] = 0;
+	return (types);
+}
+
+//Provavelmente nao sera necessario validar os paths dos identifiers agora mas sim quando tentarmos meter a imagem na janela
+bool	validate_identifiers(t_game *game)
+{
+	size_t	i;
+	char	**types;
+
+	types = get_types(game);
+	i = 4;
+	while (game->identifiers[i])
+	{
+		if (!validate_types(types) || !validate_rgb_codes(game->identifiers[i] + ft_strlen(types[i])))
+		{
+			free_stuff(types);
+			return (false);
+		}
+		i += 1;
+	}
+	free_stuff(types);
+	return (true);
+}
+

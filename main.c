@@ -6,11 +6,35 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:05:05 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/12 18:30:33 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/13 18:13:36 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	debug_map(t_game *game)
+{
+	printf("\nMAP\n");
+	if (!game->buffer)
+		return ;
+	for (int i = 0; game->buffer[i]; ++i)
+	{
+		for (int j = 0; game->buffer[i][j]; ++j)
+		{
+			printf("%c", game->buffer[i][j]);
+		}
+		printf("\n");
+	}
+}
+
+void	debug_identifiers(t_game *game)
+{
+	printf("IDENTIFIERS\n");
+	if (!game->identifiers)
+		return ;
+	for (int i = 0; game->identifiers[i]; ++i)
+			printf("%s\n", game->identifiers[i]);
+}
 
 static int	start_window(t_game *game)
 {
@@ -44,15 +68,8 @@ int	main(int argc, char **argv)
 	}
 	game = generate_game(fd);
 	parse_map(&game);
-	for (int i = 0; game.buffer[i]; ++i)
-	{
-		for (int j = 0; game.buffer[i][j]; ++j)
-		{
-			printf("%c", game.buffer[i][j]);
-		}
-		printf("\n");
-	}
-
+	debug_identifiers(&game);
+	debug_map(&game);
 	if (!is_valid_map(&game))
 	{
 		printf("Invalid map\n");

@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:26:45 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/12 18:46:43 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/13 18:54:11 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,40 @@ static bool	validate_cols(const t_game *game)
 	return (true);
 }
 
+static bool validate_directions(t_game *game)
+{
+	size_t	i;
+	size_t	j;
+	size_t	c_directions;
+
+	i = 0;
+	j = 0;
+	c_directions = 0;
+	while (game->buffer[i])
+	{
+		j = 0;
+		while (game->buffer[i][j])
+		{
+			if (is_cardinal_direction(game->buffer[i][j]))
+				c_directions += 1;
+			j += 1;
+		}
+		i += 1;
+	}
+	if (c_directions != 1)
+		return (false);
+	return (true);
+}
+
 bool	is_valid_map(t_game *game)
 {
 	size_t	i;
 	size_t	j;
 
 	i = 0;
+	if (!game->buffer || !validate_rows(game) || !validate_cols(game)
+		|| !validate_directions(game) || !validate_identifiers(game))
+		return (false);
 	while (game->buffer[i])
 	{
 		j = 0;
@@ -87,7 +115,5 @@ bool	is_valid_map(t_game *game)
 		}
 		i += 1;
 	}
-	if (!validate_rows(game) || !validate_cols(game))
-		return (false);
 	return (true);
 }
