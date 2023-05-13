@@ -18,7 +18,6 @@ $(NAME): $(OBJS)
 
 clean:
 	$(MAKE) clean -C libft
-	$(MAKE) clean -C mlx
 	$(RM) $(OBJS)
 
 fclean: clean
@@ -27,6 +26,8 @@ fclean: clean
 
 run: re
 	./$(NAME) map.cub
-	$(MAKE) clean -s
+	@$(MAKE) clean -s
+    
 
 re: fclean all
+

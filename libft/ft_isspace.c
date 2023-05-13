@@ -1,48 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_map.c                                        :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 14:59:06 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/12 18:57:41 by pemiguel         ###   ########.fr       */
+/*   Created: 2023/05/12 18:08:50 by pemiguel          #+#    #+#             */
+/*   Updated: 2023/05/12 18:23:40 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "libft.h"
 
-static void	trim_spaces(char *str)
+bool	ft_isspace(char c)
 {
-	size_t	i;
-	size_t	j;
-	size_t	len;
-	
-	if (!str)
-		return ;
-	i = 0;
-	j = 0;
-	len = ft_strlen(str);
-	while (i < len)
-	{
-		if (!ft_isspace(str[i]))
-		{
-			str[j] = str[i];
-			j += 1;
-		}	
-		i += 1;
-	}
-	str[j] = '\0';
-}
-
-void	parse_map(t_game *game)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < game->cols)
-	{
-		trim_spaces(game->buffer[i]);
-		i += 1;
-	}
+    return (c == ' ');
 }

@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:05:05 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/11 15:07:33 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/12 18:30:33 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int	main(int argc, char **argv)
 	}
 	game = generate_game(fd);
 	parse_map(&game);
-	for (int i = 0; i < game.cols; ++i)
+	for (int i = 0; game.buffer[i]; ++i)
 	{
-		for (int j = 0; j < game.rows; ++j)
+		for (int j = 0; game.buffer[i][j]; ++j)
 		{
 			printf("%c", game.buffer[i][j]);
 		}
@@ -62,7 +62,7 @@ int	main(int argc, char **argv)
 	}
 	start_window(&game);
 	mlx_key_hook(game.win, &close_window, &game);
-	mlx_hook(game.win, 17, 0, &exit, 0); //top_right 'x'
+	//mlx_hook(game.win, 17, 0, &exit, 0); //top_right 'x'
 	mlx_loop(game.mlx);
 	free_game(&game);
 	close(fd);
