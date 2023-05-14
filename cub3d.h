@@ -46,6 +46,15 @@ void	free_game(t_game *game);
 
 /*walls.c*/
 
+static inline int	get_first_occur_row(t_game *game, size_t row)
+{
+	size_t	i;
+
+	i = 0;
+	while (game->buffer[row][i] && ft_isspace(game->buffer[row][i]))
+		i += 1;
+	return (i);
+}
 bool	surrounded_by_walls(const t_game *game);
 
 /*validate.c*/

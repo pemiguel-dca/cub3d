@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 16:13:57 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/14 12:49:16 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/14 17:09:26 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static bool	validate_rgb_codes(char *str)
 	return (true);
 }
 
-static size_t get_len(char *str)
+static size_t	get_len(char *str)
 {
 	size_t	i;
 
@@ -51,14 +51,14 @@ static char	**get_types(t_game *game)
 	i = 0;
 	while (game->identifiers[i])
 	{
-		types[i] = ft_substr(game->identifiers[i], 0, get_len(game->identifiers[i]));
+		types[i] = ft_substr(game->identifiers[i], 0,
+				get_len(game->identifiers[i]));
 		i += 1;
 	}
 	types[i] = 0;
 	return (types);
 }
 
-//Provavelmente nao sera necessario validar os paths dos identifiers agora mas sim quando tentarmos meter a imagem na janela
 bool	validate_identifiers(t_game *game)
 {
 	size_t	i;
@@ -68,7 +68,9 @@ bool	validate_identifiers(t_game *game)
 	i = 4;
 	while (game->identifiers[i])
 	{
-		if (!validate_types(types) || !validate_rgb_codes(game->identifiers[i] + ft_strlen(types[i])))
+		if (!validate_types(types)
+			|| !validate_rgb_codes(game->identifiers[i]
+				+ ft_strlen(types[i])))
 		{
 			free_2Darrays(types);
 			return (false);
@@ -78,4 +80,3 @@ bool	validate_identifiers(t_game *game)
 	free_2Darrays(types);
 	return (true);
 }
-

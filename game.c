@@ -6,19 +6,19 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/14 16:21:57 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/14 17:14:39 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static char *generate_identifiers(int fd, char *buffer)
+static char	*generate_identifiers(int fd, char *buffer)
 {
 	char			*line;
 	char			*join;
 	static size_t	cols_ide = 0;
 
-	if (cols_ide == 6)//vamos ter de ter sempre as 6 primeiras colunas reservadas para os identifiers, se faltar algum, a verificar o mapa ja vai dar erro
+	if (cols_ide == 6)
 		return (buffer);
 	line = get_next_line(fd);
 	while (line && ft_strcmp(line, "\n") == 0)
@@ -38,7 +38,7 @@ static char *generate_identifiers(int fd, char *buffer)
 		return (generate_identifiers(fd, line));
 }
 
-static char *generate_buffer(int fd, char *buffer, size_t *cols)
+static char	*generate_buffer(int fd, char *buffer, size_t *cols)
 {
 	char	*line;
 	char	*join;
@@ -84,7 +84,8 @@ t_game	generate_game(int fd)
 	identifiers = ft_split(raw_identifiers, '\n');
 	free(raw);
 	free(raw_identifiers);
-	return (t_game){.buffer = buffer, .cols = cols, .identifiers = identifiers};
+	return ((t_game){.buffer = buffer, .cols = cols,
+		.identifiers = identifiers});
 }
 
 void	free_game(t_game *game)

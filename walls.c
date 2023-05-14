@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 14:24:25 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/14 16:59:12 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/14 17:10:34 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,7 @@
 
 /*make more tests to check if any of this functions has a SEGV (read)*/
 
-static int get_first_occur_row(t_game *game, size_t row)
-{
-	size_t	i;
-
-	i = 0;
-	while (game->buffer[row][i] && ft_isspace(game->buffer[row][i]))
-		i += 1;
-	return (i);
-}
-
-static bool rigth_wall(t_game *game, size_t i, size_t j)
+static bool	rigth_wall(t_game *game, size_t i, size_t j)
 {
 	if (j == ft_strlen(game->buffer[i]) - 1)
 		return (false);
@@ -37,7 +27,7 @@ static bool rigth_wall(t_game *game, size_t i, size_t j)
 	return (false);
 }
 
-static bool left_wall(t_game *game, size_t i, size_t j)
+static bool	left_wall(t_game *game, size_t i, size_t j)
 {
 	if (j == get_first_occur_row(game, i))
 		return (false);
@@ -50,7 +40,7 @@ static bool left_wall(t_game *game, size_t i, size_t j)
 	return (false);
 }
 
-static bool down_wall(t_game *game, size_t i, size_t j)
+static bool	down_wall(t_game *game, size_t i, size_t j)
 {
 	if (i == 0 || i == game->cols - 1)
 		return (false);
@@ -63,7 +53,7 @@ static bool down_wall(t_game *game, size_t i, size_t j)
 	return (false);
 }
 
-static bool up_wall(t_game *game, int i, size_t j)
+static bool	up_wall(t_game *game, int i, size_t j)
 {
 	if (i == 0 || i == game->cols - 1)
 		return (false);
@@ -89,11 +79,12 @@ bool	surrounded_by_walls(const t_game *game)
 		j = 0;
 		while (game->buffer[i][j])
 		{
-			if (game->buffer[i][j] == '0' || is_cardinal_direction(game->buffer[i][j]))
+			if (game->buffer[i][j] == '0'
+				|| is_cardinal_direction(game->buffer[i][j]))
 			{
 				if (!rigth_wall(game, i, j) || !left_wall(game, i, j)
 					|| !up_wall(game, i, j) || !down_wall(game, i, j))
-						return (false);
+					return (false);
 			}
 			j += 1;
 		}
