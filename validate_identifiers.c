@@ -6,24 +6,11 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 16:13:57 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/13 17:58:56 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/14 12:49:16 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-static void	free_stuff(char **stuff)
-{
-	size_t	i;
-
-	i = 0;
-	while (stuff[i])
-	{
-		free(stuff[i]);
-		i += 1;
-	}
-	free(stuff);
-}
 
 static bool	validate_rgb_codes(char *str)
 {
@@ -36,12 +23,12 @@ static bool	validate_rgb_codes(char *str)
 	{
 		if (ft_atoi(rgb_codes[i]) < 0 || ft_atoi(rgb_codes[i]) > 255)
 		{
-			free_stuff(rgb_codes);
+			free_2Darrays(rgb_codes);
 			return (false);
 		}
 		i += 1;
 	}
-	free_stuff(rgb_codes);
+	free_2Darrays(rgb_codes);
 	return (true);
 }
 
@@ -83,12 +70,12 @@ bool	validate_identifiers(t_game *game)
 	{
 		if (!validate_types(types) || !validate_rgb_codes(game->identifiers[i] + ft_strlen(types[i])))
 		{
-			free_stuff(types);
+			free_2Darrays(types);
 			return (false);
 		}
 		i += 1;
 	}
-	free_stuff(types);
+	free_2Darrays(types);
 	return (true);
 }
 

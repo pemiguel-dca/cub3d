@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:05:05 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/13 18:13:36 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/14 12:27:06 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	game = generate_game(fd);
-	parse_map(&game);
 	debug_identifiers(&game);
 	debug_map(&game);
 	if (!is_valid_map(&game))

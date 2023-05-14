@@ -1,4 +1,4 @@
-SRCS=main.c game.c validate.c close_game.c parse_map.c validate_identifiers.c
+SRCS=main.c game.c validate.c close_game.c validate_identifiers.c walls.c
 OBJS=$(SRCS:.c=.o)
 
 CC=cc

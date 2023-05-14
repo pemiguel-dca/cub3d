@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/13 18:18:45 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/14 16:21:57 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,12 @@ static char *generate_identifiers(int fd, char *buffer)
 	if (cols_ide == 6)//vamos ter de ter sempre as 6 primeiras colunas reservadas para os identifiers, se faltar algum, a verificar o mapa ja vai dar erro
 		return (buffer);
 	line = get_next_line(fd);
-	cols_ide += 1;
 	while (line && ft_strcmp(line, "\n") == 0)
 	{
 		free(line);
 		line = get_next_line(fd);
 	}
-	if (!line)
-		return (NULL);
+	cols_ide += 1;
 	if (buffer)
 	{
 		join = ft_strjoin(buffer, line);
@@ -46,10 +44,17 @@ static char *generate_buffer(int fd, char *buffer, size_t *cols)
 	char	*join;
 
 	line = get_next_line(fd);
+	if (*cols == 0)
+	{
+		while (line && ft_strcmp(line, "\n") == 0)
+		{
+			free(line);
+			line = get_next_line(fd);
+		}
+	}
 	if (!line || ft_strcmp(line, "\n") == 0)
 	{
-		if (ft_strcmp(line, "\n") == 0)
-			free(line);
+		free(line);
 		return (buffer);
 	}
 	*cols += 1;
@@ -84,28 +89,10 @@ t_game	generate_game(int fd)
 
 void	free_game(t_game *game)
 {
-	size_t	i;
-
-	i = 0;
 	if (game->buffer)
-	{
-		while (game->buffer[i])
-		{
-			free(game->buffer[i]);
-			i += 1;
-		}
-		free(game->buffer);
-	}
-	i = 0;
+		free_2Darrays(game->buffer);
 	if (game->identifiers)
-	{
-		while (game->identifiers[i])
-		{
-			free(game->identifiers[i]);
-			i += 1;
-		}
-		free(game->identifiers);
-	}
+		free_2Darrays(game->identifiers);
 	if (game->mlx && game->win)
 	{
 		mlx_destroy_window(game->mlx, game->win);
