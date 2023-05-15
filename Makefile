@@ -1,6 +1,7 @@
 SRCS=main.c game.c \
 	map_validation/validate.c map_validation/validate_identifiers.c map_validation/walls.c \
-	mlx_keys.c
+	mlx_keys.c \
+	raycaster.c
 OBJS=$(SRCS:.c=.o)
 
 CC=cc
@@ -29,7 +30,6 @@ fclean: clean
 run: re
 	./$(NAME) map.cub
 	@$(MAKE) clean -s
-
 
 re: fclean all
 

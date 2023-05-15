@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:21:59 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/15 12:23:13 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:01:48 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,15 @@ typedef struct
 	t_vector	player_camera_plane;
 	t_vector	ray_dir;
 	t_vector	camera;
+	t_vector	curr_ray_square;
 	int			fov;
 }	t_raycaster;
 
+t_raycaster	*init_rc(const char **buffer);
 
-static inline	bzero_vector(t_vector *v)
+static inline t_vector	init_vector(double x, double y)
 {
-	*v = (t_vector){.x = 0, .y = 0};
+	return ((t_vector){.x = x, .y = y});
 }
 
 /*Operations with 'vectors'*/
