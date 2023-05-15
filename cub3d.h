@@ -8,7 +8,8 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include "validate.h"
+# include "map_validation/validate.h"
+# include "raycaster.h"
 
 # define ACCEPTABLE_CHARS "01NSEW "
 # define EXTENSION "cub"
@@ -39,10 +40,12 @@ typedef struct
 	int				endian;
 	void			*img_ptr;
 	char			*img_data;
+	t_raycaster		*rc;
 }	t_game;
 
-t_game	generate_game(int fd);
-void	free_game(t_game *game);
+t_game		generate_game(int fd);
+t_vector	player_pos(const char **buffer);
+void		free_game(t_game *game);
 
 /*walls.c*/
 
@@ -55,11 +58,10 @@ static inline int	get_first_occur_row(t_game *game, size_t row)
 		i += 1;
 	return (i);
 }
+
 bool	surrounded_by_walls(const t_game *game);
 
 /*validate.c*/
-
-bool	is_valid_map(t_game *game);
 
 static inline bool	verify_char(char to_verify)
 {
@@ -91,13 +93,14 @@ static inline bool	has_extension(const char *path)
 	return (true);
 }
 
-/*close_game.c*/
+bool	is_valid_map(t_game *game);
 
-int	close_window(int key, t_game *game);
+/*mlx_keys.c*/
+
+int	top_right(t_game *game);
+int	keys_pressed(int key, t_game *game);
 
 /*validate_identifiers*/
-
-bool	validate_identifiers(t_game *game);
 
 static inline void	free_2Darrays(char **stuff)
 {
@@ -111,5 +114,7 @@ static inline void	free_2Darrays(char **stuff)
 	}
 	free(stuff);
 }
+
+bool	validate_identifiers(t_game *game);
 
 #endif // CUB3D_H

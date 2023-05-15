@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:05:05 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/14 12:27:06 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/15 12:18:52 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	start_window(&game);
-	mlx_key_hook(game.win, &close_window, &game);
-	//mlx_hook(game.win, 17, 0, &exit, 0); //top_right 'x'
+	mlx_key_hook(game.win, &keys_pressed, &game);
+	mlx_hook(game.win, 17, 0, &top_right, &game);
 	mlx_loop(game.mlx);
 	free_game(&game);
 	close(fd);

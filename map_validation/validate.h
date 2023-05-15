@@ -1,46 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_map.c                                        :+:      :+:    :+:   */
+/*   validate.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/11 14:59:06 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/13 18:14:38 by pemiguel         ###   ########.fr       */
+/*   Created: 2023/05/14 12:30:08 by pemiguel          #+#    #+#             */
+/*   Updated: 2023/05/15 12:38:52 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#ifndef VALIDATE_H
+# define VALIDATE_H
 
-static void	trim_spaces(char *str)
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <stdbool.h>
+# include "../libft/libft.h"
+
+typedef struct
 {
-	size_t	i;
-	size_t	j;
+	int	no;
+	int	so;
+	int	we;
+	int	ea;
+	int	f;
+	int	c;
+}	t_validate;
 
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (!ft_isspace(str[i]))
-		{
-			str[j] = str[i];
-			j += 1;
-		}
-		i += 1;
-	}
-	str[j] = '\0';
-}
-
-void	parse_map(t_game *game)
-{
-	size_t	i;
-
-	i = 0;
-	if (!game->buffer)
-		return ;
-	while (game->buffer[i])
-	{
-		trim_spaces(game->buffer[i]);
-		i += 1;
-	}
-}
+#endif

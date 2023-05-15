@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/14 17:14:39 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/15 12:38:01 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,26 @@ t_game	generate_game(int fd)
 		.identifiers = identifiers});
 }
 
+t_vector	player_pos(const char **buffer)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (buffer[i])
+	{
+		j = 0;
+		while (buffer[i][j])
+		{
+			if (is_cardinal_direction(buffer[i][j]))
+				break ;
+			j += 1;
+		}
+		i += 1;
+	}
+	return ((t_vector){.x = j, .y = i});
+}
+
 void	free_game(t_game *game)
 {
 	if (game->buffer)
@@ -100,4 +120,5 @@ void	free_game(t_game *game)
 		mlx_destroy_image(game->mlx, game->img_ptr);
 		free(game->mlx);
 	}
+	//free(game->rc);
 }
