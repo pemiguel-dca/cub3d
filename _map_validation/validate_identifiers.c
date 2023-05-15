@@ -3,16 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   validate_identifiers.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 16:13:57 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/15 12:37:03 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/15 17:23:50 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-static bool validate_types(char **identifiers)
+static bool	only_digits(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!isdigit(str[i]))
+			return (false);
+		i += 1;
+	}
+	return (true);
+}
+
+static bool	validate_types(char **identifiers)
 {
 	t_validate	val;
 	size_t		i;
@@ -48,7 +62,8 @@ static bool	validate_rgb_codes(char *str)
 	i = 0;
 	while (rgb_codes[i])
 	{
-		if (ft_atoi(rgb_codes[i]) < 0 || ft_atoi(rgb_codes[i]) > 255)
+		if (ft_atoi(rgb_codes[i]) < 0 || ft_atoi(rgb_codes[i]) > 255
+			|| !only_digits(rgb_codes[i]))
 		{
 			free_2Darrays(rgb_codes);
 			return (false);
@@ -56,6 +71,8 @@ static bool	validate_rgb_codes(char *str)
 		i += 1;
 	}
 	free_2Darrays(rgb_codes);
+	if (i != 3)
+		return (false);
 	return (true);
 }
 
@@ -74,7 +91,7 @@ static char	**get_types(t_game *game)
 	char	**types;
 	size_t	i;
 
-	types = malloc((N_TYPES + 1) * sizeof(char *));
+	types = malloc((N_SETTINGS + 1) * sizeof(char *));
 	i = 0;
 	while (game->identifiers[i])
 	{

@@ -1,7 +1,5 @@
-SRCS=main.c game.c \
-	map_validation/validate.c map_validation/validate_identifiers.c map_validation/walls.c \
-	mlx_keys.c \
-	raycaster.c
+SRCS=main.c game.c mlx_keys.c \
+	#map_validation/validate.c
 OBJS=$(SRCS:.c=.o)
 
 CC=cc

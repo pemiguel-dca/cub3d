@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:21:59 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/15 16:01:48 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/15 17:57:22 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,34 @@ static inline t_vector div_vectors(t_vector v1, t_vector v2)
 	result.y = v1.y / v2.y;
 	return (result);
 }
+
+/* meter esta merda direito dps */
+
+static bool is_cardinal_directionfodase(char c)
+{
+	return (c == 'N' || c == 'S' || c == 'W' || c == 'E');
+}
+
+static inline t_vector	player_pos(const char **buffer)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (buffer[i])
+	{
+		j = 0;
+		while (buffer[i][j])
+		{
+			if (is_cardinal_directionfodase(buffer[i][j]))
+				break ;
+			j += 1;
+		}
+		i += 1;
+	}
+	return ((t_vector){.x = j, .y = i});
+}
+
+/* */
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   walls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 14:24:25 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/15 12:36:48 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/15 16:33:45 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*make more tests to check if any of this functions has a SEGV (read)*/
 
-static bool	rigth_wall(t_game *game, size_t i, size_t j)
+static bool	rigth_wall(const t_game *game, size_t i, size_t j)
 {
 	if (j == ft_strlen(game->buffer[i]) - 1)
 		return (false);
@@ -27,7 +27,7 @@ static bool	rigth_wall(t_game *game, size_t i, size_t j)
 	return (false);
 }
 
-static bool	left_wall(t_game *game, size_t i, size_t j)
+static bool	left_wall(const t_game *game, size_t i, size_t j)
 {
 	if (j == get_first_occur_row(game, i))
 		return (false);
@@ -40,7 +40,7 @@ static bool	left_wall(t_game *game, size_t i, size_t j)
 	return (false);
 }
 
-static bool	down_wall(t_game *game, size_t i, size_t j)
+static bool	down_wall(const t_game *game, size_t i, size_t j)
 {
 	if (i == 0 || i == game->cols - 1)
 		return (false);
@@ -53,7 +53,7 @@ static bool	down_wall(t_game *game, size_t i, size_t j)
 	return (false);
 }
 
-static bool	up_wall(t_game *game, int i, size_t j)
+static bool	up_wall(const t_game *game, int i, size_t j)
 {
 	if (i == 0 || i == game->cols - 1)
 		return (false);

@@ -3,117 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/15 14:54:01 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/15 18:28:47 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static char	*generate_identifiers(int fd, char *buffer)
-{
-	char			*line;
-	char			*join;
-	static size_t	cols_ide = 0;
-
-	if (cols_ide == 6)
-		return (buffer);
-	line = get_next_line(fd);
-	while (line && ft_strcmp(line, "\n") == 0)
-	{
-		free(line);
-		line = get_next_line(fd);
-	}
-	cols_ide += 1;
-	if (buffer)
-	{
-		join = ft_strjoin(buffer, line);
-		free(buffer);
-		free(line);
-		return (generate_identifiers(fd, join));
-	}
-	else
-		return (generate_identifiers(fd, line));
-}
-
-static char	*generate_buffer(int fd, char *buffer, size_t *cols)
+static char	*generate_buffer(int fd, char *buffer)
 {
 	char	*line;
 	char	*join;
 
 	line = get_next_line(fd);
-	if (*cols == 0)
-	{
-		while (line && ft_strcmp(line, "\n") == 0)
-		{
-			free(line);
-			line = get_next_line(fd);
-		}
-	}
-	if (!line || ft_strcmp(line, "\n") == 0)
+	if (!line)
 	{
 		free(line);
 		return (buffer);
 	}
-	*cols += 1;
 	if (buffer)
 	{
 		join = ft_strjoin(buffer, line);
 		free(buffer);
 		free(line);
-		return (generate_buffer(fd, join, cols));
+		return (generate_buffer(fd, join));
 	}
 	else
-		return (generate_buffer(fd, line, cols));
+		return (generate_buffer(fd, line));
 }
 
-t_game	generate_game(int fd)
+char	**get_buffer(int fd)
 {
-	size_t	cols;
 	char	*raw;
-	char	*raw_identifiers;
 	char	**buffer;
-	char	**identifiers;
 
-	cols = 0;
-	raw_identifiers = generate_identifiers(fd, NULL);
-	raw = generate_buffer(fd, NULL, &cols);
+	raw = generate_buffer(fd, NULL);
 	buffer = ft_split(raw, '\n');
-	identifiers = ft_split(raw_identifiers, '\n');
 	free(raw);
-	free(raw_identifiers);
-	return ((t_game){.buffer = buffer, .cols = cols,
-		.identifiers = identifiers, .rc = init_rc(buffer)});
+	return (buffer);
 }
 
-t_vector	player_pos(const char **buffer)
+t_game	generate_game(char **buffer)
 {
-	size_t	i;
-	size_t	j;
+	char		**settings;
+	size_t		i;
 
+	settings = malloc(sizeof(char *) * N_SETTINGS);
 	i = 0;
-	while (buffer[i])
+	while (i < N_SETTINGS)
 	{
-		j = 0;
-		while (buffer[i][j])
-		{
-			if (is_cardinal_direction(buffer[i][j]))
-				break ;
-			j += 1;
-		}
+		settings[i] = *buffer;
 		i += 1;
+		buffer += 1;
 	}
-	return ((t_vector){.x = j, .y = i});
+	return ((t_game){.map = buffer,
+		.settings = settings, .rc = NULL});
 }
 
 void	free_game(t_game *game)
 {
-	if (game->buffer)
-		free_2Darrays(game->buffer);
-	if (game->identifiers)
-		free_2Darrays(game->identifiers);
+	size_t	i;
+
+	i = 0;
+	if (game->map)
+		free_2Darrays(game->map);
+	if (game->settings)
+		free(game->settings);
 	if (game->mlx && game->win)
 	{
 		mlx_destroy_window(game->mlx, game->win);

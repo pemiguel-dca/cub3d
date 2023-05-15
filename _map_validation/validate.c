@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:26:45 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/15 17:58:31 by pnobre-m         ###   ########.fr       */
+/*   Updated: 2023/05/15 12:36:36 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@ static inline bool	can_move(t_game *game)
 	size_t	j;
 
 	i = 0;
-	while (game->map[i])
+	while (game->buffer[i])
 	{
 		j = 0;
-		while (game->map[i][j])
+		while (game->buffer[i][j])
 		{
-			if (is_cardinal_direction(game->map[i][j])
-				&& (game->map[i][j + 1] == '0'
-				|| game->map[i][j - 1] == '0'
-				|| game->map[i + 1][j] == '0'
-				||game->map[i - 1][j] == '0'))
+			if (is_cardinal_direction(game->buffer[i][j])
+				&& (game->buffer[i][j + 1] == '0'
+				|| game->buffer[i][j - 1] == '0'
+				|| game->buffer[i + 1][j] == '0'
+				||game->buffer[i - 1][j] == '0'))
 				return (true);
 			j += 1;
 		}
@@ -42,19 +42,19 @@ bool	is_valid_map(t_game *game)
 	size_t	j;
 	size_t	c_directions;
 
-	if (!game->map || !validate_identifiers(game)
+	if (!game->buffer || !validate_identifiers(game)
 		|| !surrounded_by_walls(game))
 		return (false);
 	i = 0;
 	c_directions = 0;
-	while (game->map[i])
+	while (game->buffer[i])
 	{
 		j = 0;
-		while (game->map[i][j])
+		while (game->buffer[i][j])
 		{
-			if (!verify_char(game->map[i][j]))
+			if (!verify_char(game->buffer[i][j]))
 				return (false);
-			if (is_cardinal_direction(game->map[i][j]))
+			if (is_cardinal_direction(game->buffer[i][j]))
 				c_directions += 1;
 			j += 1;
 		}

@@ -1,39 +1,27 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/* *****************************************************https://lodev.org/cgtutor/raycasting.html                       +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:05:05 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/15 12:18:52 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/15 17:02:56 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	debug_map(t_game *game)
+/*site for raycasting guide: https://lodev.org/cgtutor/raycasting.html*/
+static void	__debug_map(const t_game *game)
 {
 	printf("\nMAP\n");
-	if (!game->buffer)
+	if (!game->map)
 		return ;
-	for (int i = 0; game->buffer[i]; ++i)
+	for (int i = 0; game->map[i]; ++i)
 	{
-		for (int j = 0; game->buffer[i][j]; ++j)
-		{
-			printf("%c", game->buffer[i][j]);
-		}
-		printf("\n");
+		printf("%s\n", game->map[i]);
 	}
 }
 
-void	debug_identifiers(t_game *game)
+static void	__debug_identifiers(const t_game *game)
 {
 	printf("IDENTIFIERS\n");
-	if (!game->identifiers)
-		return ;
-	for (int i = 0; game->identifiers[i]; ++i)
-			printf("%s\n", game->identifiers[i]);
+	for (int i = 0; i < N_SETTINGS; ++i)
+		printf("%s\n", game->settings[i]);
 }
 
 static int	start_window(t_game *game)
@@ -52,6 +40,8 @@ static int	start_window(t_game *game)
 
 int	main(int argc, char **argv)
 {
+	char	**buffer;
+	size_t	buf_len;
 	t_game	game;
 	int		fd;
 
@@ -66,20 +56,36 @@ int	main(int argc, char **argv)
 		printf("Error opening file '%s'\n", argv[1]);
 		return (EXIT_FAILURE);
 	}
-	game = generate_game(fd);
-	debug_identifiers(&game);
-	debug_map(&game);
-	if (!is_valid_map(&game))
-	{
+	buffer = get_buffer(fd);
+	buf_len = 0;
+	while (buffer[buf_len])
+		buf_len += 1;
+	if (buf_len < 7) {
 		printf("Invalid map\n");
-		free_game(&game);
-		close(fd);
 		return (EXIT_FAILURE);
 	}
+	game = generate_game(buffer);
+	__debug_identifiers(&game);
+	__debug_map(&game);
 	start_window(&game);
 	mlx_key_hook(game.win, &keys_pressed, &game);
 	mlx_hook(game.win, 17, 0, &top_right, &game);
 	mlx_loop(game.mlx);
+	/*
+	TODO add remaining validation (back)
+	if (is_valid_map(&game))
+	{
+		start_window(&game);
+		mlx_key_hook(game.win, &keys_pressed, &game);
+		mlx_hook(game.win, 17, 0, &top_right, &game);
+		mlx_loop(game.mlx);
+	}
+	else
+	{
+		printf("Invalid map\n");
+	}
+	*/
+	free_2Darrays(buffer);
 	free_game(&game);
 	close(fd);
 }

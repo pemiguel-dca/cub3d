@@ -16,7 +16,7 @@
 # define WIDTH 800
 # define HEIGHT 600
 # define WIN_NAME "cub3D"
-# define N_TYPES 6
+# define N_SETTINGS 6
 
 /*KEY CODES*/
 
@@ -30,9 +30,8 @@
 
 typedef struct
 {
-	unsigned int	cols;
-	char			**buffer;
-	char			**identifiers;
+	char			**map;
+	char			**settings;
 	void			*mlx;
 	void			*win;
 	int				bpp;
@@ -43,18 +42,19 @@ typedef struct
 	t_raycaster		*rc;
 }	t_game;
 
-t_game		generate_game(int fd);
-t_vector	player_pos(const char **buffer);
+char		**get_buffer(int fd);
+t_game		generate_game(char **buffer);
+t_vector	player_pos(const char **map);
 void		free_game(t_game *game);
 
 /*walls.c*/
 
-static inline int	get_first_occur_row(t_game *game, size_t row)
+static inline int	get_first_occur_row(const t_game *game, size_t row)
 {
 	size_t	i;
 
 	i = 0;
-	while (game->buffer[row][i] && ft_isspace(game->buffer[row][i]))
+	while (game->map[row][i] && ft_isspace(game->map[row][i]))
 		i += 1;
 	return (i);
 }
