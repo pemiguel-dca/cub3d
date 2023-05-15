@@ -49,6 +49,16 @@ void		free_game(t_game *game);
 
 /*walls.c*/
 
+static inline size_t	get_cols(const char **map)
+{
+	size_t	i;
+
+	i = 0;
+	while (map[i])
+		i += 1;
+	return (i);
+}
+
 static inline int	get_first_occur_row(const t_game *game, size_t row)
 {
 	size_t	i;
@@ -100,7 +110,7 @@ bool	is_valid_map(t_game *game);
 int	top_right(t_game *game);
 int	keys_pressed(int key, t_game *game);
 
-/*validate_identifiers*/
+/*validate_settings*/
 
 static inline void	free_2Darrays(char **stuff)
 {
@@ -115,6 +125,6 @@ static inline void	free_2Darrays(char **stuff)
 	free(stuff);
 }
 
-bool	validate_identifiers(t_game *game);
+bool	validate_settings(t_game *game);
 
 #endif // CUB3D_H

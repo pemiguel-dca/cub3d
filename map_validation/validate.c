@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:26:45 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/15 17:58:31 by pnobre-m         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:31:33 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool	is_valid_map(t_game *game)
 	size_t	j;
 	size_t	c_directions;
 
-	if (!game->map || !validate_identifiers(game)
+	if (!game->map || !validate_settings(game)
 		|| !surrounded_by_walls(game))
 		return (false);
 	i = 0;

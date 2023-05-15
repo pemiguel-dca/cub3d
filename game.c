@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/15 18:28:47 by pnobre-m         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:29:56 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	free_game(t_game *game)
 	if (game->map)
 		free_2Darrays(game->map);
 	if (game->settings)
-		free(game->settings);
+		free_2Darrays(game->settings);
 	if (game->mlx && game->win)
 	{
 		mlx_destroy_window(game->mlx, game->win);
