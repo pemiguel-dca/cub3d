@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 14:24:25 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/15 21:20:58 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/16 12:43:58 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 
 static bool	rigth_wall(const t_game *game, size_t i, size_t j)
 {
-	if (j == ft_strlen(game->map[i]) - 1)
-		return (false);
 	while (game->map[i][j])
 	{
 		if (game->map[i][j] == '1')
@@ -29,8 +27,6 @@ static bool	rigth_wall(const t_game *game, size_t i, size_t j)
 
 static bool	left_wall(const t_game *game, size_t i, size_t j)
 {
-	if (j == get_first_occur_row(game, i))
-		return (false);
 	while (game->map[i][j])
 	{
 		if (game->map[i][j] == '1')
@@ -42,12 +38,12 @@ static bool	left_wall(const t_game *game, size_t i, size_t j)
 
 static bool	down_wall(const t_game *game, size_t i, size_t j)
 {
-	if (i == 0 || i == get_cols(game->map) - 1)
-		return (false);
 	while (game->map[i])
 	{
 		if (game->map[i][j] == '1')
 			return (true);
+		if (game->map[i + 1] && j >= ft_strlen(game->map[i + 1]))
+			return (false);
 		i += 1;
 	}
 	return (false);
@@ -55,17 +51,28 @@ static bool	down_wall(const t_game *game, size_t i, size_t j)
 
 static bool	up_wall(const t_game *game, int i, size_t j)
 {
-	if (i == 0 || i == get_cols(game->map) - 1)
-		return (false);
 	while (i != -1)
 	{
+		if (game->map[i][j] == '1')
+			return (true);
 		if (i - 1 > 0 && j >= ft_strlen(game->map[i - 1]))
 			return (false);
-		else if (game->map[i][j] == '1')
-			return (true);
 		i -= 1;
 	}
 	return (false);
+}
+
+bool	check_walls(t_game *game, size_t y, size_t x)
+{
+	/*extremidades*/
+	if (x == get_first_occur_row(game, y)
+		|| x == get_last_occur_row(game, y)
+		|| y == 0 || y == get_cols(game->map) - 1)
+		return (false);
+	if (!rigth_wall(game, y, x) || !left_wall(game, y, x)
+		|| !up_wall(game, y, x) || !down_wall(game, y, x))
+		return (false);
+	return (true);
 }
 
 bool	surrounded_by_walls(const t_game *game)
@@ -79,13 +86,10 @@ bool	surrounded_by_walls(const t_game *game)
 		j = 0;
 		while (game->map[i][j])
 		{
-			if (game->map[i][j] == '0'
+			if ((game->map[i][j] == '0'
 				|| is_cardinal_direction(game->map[i][j]))
-			{
-				if (!rigth_wall(game, i, j) || !left_wall(game, i, j)
-					|| !up_wall(game, i, j) || !down_wall(game, i, j))
+				&& !check_walls(game, i, j))
 					return (false);
-			}
 			j += 1;
 		}
 		i += 1;

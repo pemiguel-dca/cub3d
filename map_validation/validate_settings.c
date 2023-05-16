@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 16:13:57 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/15 21:59:33 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/16 12:46:43 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ static bool	validate_rgb_codes(char *str)
 		i += 1;
 	}
 	free_2Darrays(rgb_codes);
-	
+	if (i != 3)//verificar se contem RED, GREEN, BLUE
+		return (false);
 	return (true);
 }
 
@@ -114,7 +115,7 @@ bool	validate_settings(t_game *game)
 	while (game->settings[i])
 	{
 		if (!validate_types(types)
-			|| ((game->settings[i][0] == 'F' || game->settings[i][0] == 'C') 
+			|| ((game->settings[i][0] == 'F' || game->settings[i][0] == 'C')
 			&& !validate_rgb_codes(game->settings[i] + ft_strlen(types[i]))))
 		{
 			free_2Darrays(types);

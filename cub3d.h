@@ -59,13 +59,23 @@ static inline size_t	get_cols(const char **map)
 	return (i);
 }
 
-static inline int	get_first_occur_row(const t_game *game, size_t row)
+static inline size_t	get_first_occur_row(const t_game *game, size_t row)
 {
 	size_t	i;
 
 	i = 0;
 	while (game->map[row][i] && ft_isspace(game->map[row][i]))
 		i += 1;
+	return (i);
+}
+
+static inline size_t	get_last_occur_row(const t_game *game, size_t row)
+{
+	size_t	i;
+
+	i = ft_strlen(game->map[row]) - 1;
+	while (game->map[row][i] && ft_isspace(game->map[row][i]))
+		i -= 1;
 	return (i);
 }
 
