@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:21:59 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/15 17:57:22 by pnobre-m         ###   ########.fr       */
+/*   Updated: 2023/05/16 15:11:10 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,24 @@ typedef struct
 	t_vector	ray_dir;
 	t_vector	camera;
 	t_vector	curr_ray_square;
-	int			fov;
+	size_t		fov;
 }	t_raycaster;
+
+/*check out https://www.youtube.com/watch?v=NbSee-XM7WA to understand DDA algorithm*/
+
+typedef	struct
+{
+	t_vector	length_until_next_square;
+	t_vector	length_to_next_square;
+	double		length_ray;
+	t_vector	step; //take a step in which direction(+1x for right, +1y for up, -1x for left, -1y for down)
+	bool		hit_wall;
+	size_t		hit_side; //if x side of square was it = 1, if y side = 0
+}	t_dda;
 
 t_raycaster	*init_rc(const char **buffer);
 
-static inline t_vector	init_vector(double x, double y)
+static inline t_vector	write_vector(double x, double y)
 {
 	return ((t_vector){.x = x, .y = y});
 }

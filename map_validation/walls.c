@@ -6,15 +6,13 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 14:24:25 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/16 12:43:58 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/16 14:48:52 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-/*make more tests to check if any of this functions has a SEGV (read)*/
-
-static bool	rigth_wall(const t_game *game, size_t i, size_t j)
+static bool	right_wall(const t_game *game, size_t i, size_t j)
 {
 	while (game->map[i][j])
 	{
@@ -69,7 +67,7 @@ bool	check_walls(t_game *game, size_t y, size_t x)
 		|| x == get_last_occur_row(game, y)
 		|| y == 0 || y == get_cols(game->map) - 1)
 		return (false);
-	if (!rigth_wall(game, y, x) || !left_wall(game, y, x)
+	if (!right_wall(game, y, x) || !left_wall(game, y, x)
 		|| !up_wall(game, y, x) || !down_wall(game, y, x))
 		return (false);
 	return (true);
