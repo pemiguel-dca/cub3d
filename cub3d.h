@@ -28,6 +28,14 @@
 # define S 115
 # define D 100
 
+typedef struct {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_data;
+
 typedef struct
 {
 	char			**map;
@@ -37,8 +45,6 @@ typedef struct
 	int				bpp;
 	int				size_line;
 	int				endian;
-	void			*img_ptr;
-	char			*img_data;
 	t_raycaster		*rc;
 }	t_game;
 

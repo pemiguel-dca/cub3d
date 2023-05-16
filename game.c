@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/15 21:29:56 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/16 20:16:11 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void	free_game(t_game *game)
 	if (game->mlx && game->win)
 	{
 		mlx_destroy_window(game->mlx, game->win);
-		mlx_destroy_image(game->mlx, game->img_ptr);
 		free(game->mlx);
 	}
 	if (game->rc)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   walls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 14:24:25 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/16 14:48:52 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/16 19:48:36 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,12 @@ static bool	up_wall(const t_game *game, int i, size_t j)
 	return (false);
 }
 
-bool	check_walls(t_game *game, size_t y, size_t x)
+bool	check_walls(const t_game *game, size_t y, size_t x)
 {
 	/*extremidades*/
 	if (x == get_first_occur_row(game, y)
 		|| x == get_last_occur_row(game, y)
-		|| y == 0 || y == get_cols(game->map) - 1)
+		|| y == 0 || y == get_cols((const char **)game->map) - 1)
 		return (false);
 	if (!right_wall(game, y, x) || !left_wall(game, y, x)
 		|| !up_wall(game, y, x) || !down_wall(game, y, x))
