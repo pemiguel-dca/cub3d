@@ -10,11 +10,12 @@
 # include <stdlib.h>
 # include "map_validation/validate.h"
 # include "raycaster.h"
+# include "error_msg.h"
 
 # define ACCEPTABLE_CHARS "01NSEW "
 # define EXTENSION "cub"
-# define WIDTH 800
-# define HEIGHT 600
+# define WIDTH 960
+# define HEIGHT 540
 # define WIN_NAME "cub3D"
 # define N_SETTINGS 6
 
@@ -40,17 +41,13 @@ typedef struct
 {
 	char			**map;
 	char			**settings;
+	char			cardinal_direction;
 	void			*mlx;
 	void			*win;
-	int				bpp;
-	int				size_line;
-	int				endian;
-	t_raycaster		*rc;
 }	t_game;
 
 char		**get_buffer(int fd);
 t_game		generate_game(char **buffer);
-t_vector	player_pos(const char **map);
 void		free_game(t_game *game);
 
 /*walls.c*/
@@ -108,6 +105,26 @@ static inline bool is_cardinal_direction(char c)
 	return (c == 'N' || c == 'S' || c == 'W' || c == 'E');
 }
 
+static inline t_vector	player_pos(const char **buffer)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (buffer[i])
+	{
+		j = 0;
+		while (buffer[i][j])
+		{
+			if (is_cardinal_direction(buffer[i][j]))
+				break ;
+			j += 1;
+		}
+		i += 1;
+	}
+	return ((t_vector){.x = j, .y = i});
+}
+
 static inline bool	has_extension(const char *path)
 {
 	char	*sub;
@@ -132,6 +149,8 @@ static inline void	free_2Darrays(char **stuff)
 {
 	size_t	i;
 
+	if (!stuff)
+		return ;
 	i = 0;
 	while (stuff[i])
 	{
@@ -142,5 +161,7 @@ static inline void	free_2Darrays(char **stuff)
 }
 
 bool	validate_settings(t_game *game);
+
+/*open_textures.c*/
 
 #endif // CUB3D_H

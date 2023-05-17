@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   walls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 14:24:25 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/16 19:48:36 by pnobre-m         ###   ########.fr       */
+/*   Updated: 2023/05/17 15:02:30 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static bool	up_wall(const t_game *game, int i, size_t j)
 
 bool	check_walls(const t_game *game, size_t y, size_t x)
 {
-	/*extremidades*/
 	if (x == get_first_occur_row(game, y)
 		|| x == get_last_occur_row(game, y)
 		|| y == 0 || y == get_cols((const char **)game->map) - 1)
@@ -87,7 +86,7 @@ bool	surrounded_by_walls(const t_game *game)
 			if ((game->map[i][j] == '0'
 				|| is_cardinal_direction(game->map[i][j]))
 				&& !check_walls(game, i, j))
-					return (false);
+					return (error_msg(MAP_WALLS));
 			j += 1;
 		}
 		i += 1;

@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 16:13:57 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/16 12:46:43 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/17 17:21:20 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ static bool	validate_types(char **settings)
 			val.c += 1;
 		i += 1;
 	}
-	return (val.no == 1 && val.so == 1 && val.we == 1
-			&& val.ea == 1 && val.f == 1 && val.c == 1);
+	if (!(val.no == 1 && val.so == 1 && val.we == 1
+			&& val.ea == 1 && val.f == 1 && val.c == 1))
+		return (error_msg(SETTINGS));
+	return (true);
 }
 
 static bool	validate_rgb_codes(char *str)
@@ -68,13 +70,13 @@ static bool	validate_rgb_codes(char *str)
 			|| !only_digits(rgb_codes[i]))
 		{
 			free_2Darrays(rgb_codes);
-			return (false);
+			return (error_msg(RGB_FORMAT));
 		}
 		i += 1;
 	}
 	free_2Darrays(rgb_codes);
-	if (i != 3)//verificar se contem RED, GREEN, BLUE
-		return (false);
+	if (i != 3)
+		return (error_msg(RGB_FORMAT));
 	return (true);
 }
 

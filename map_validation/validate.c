@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:26:45 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/15 21:31:33 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/17 17:43:17 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,15 @@ static inline bool	can_move(t_game *game)
 				|| game->map[i][j - 1] == '0'
 				|| game->map[i + 1][j] == '0'
 				||game->map[i - 1][j] == '0'))
+			{
+				game->cardinal_direction = game->map[i][j];
 				return (true);
+			}
 			j += 1;
 		}
 		i += 1;
 	}
-	return (false);
+	return (error_msg(CANT_MOVE));
 }
 
 bool	is_valid_map(t_game *game)
@@ -53,7 +56,7 @@ bool	is_valid_map(t_game *game)
 		while (game->map[i][j])
 		{
 			if (!verify_char(game->map[i][j]))
-				return (false);
+				return (error_msg(INVALID_CHAR));
 			if (is_cardinal_direction(game->map[i][j]))
 				c_directions += 1;
 			j += 1;

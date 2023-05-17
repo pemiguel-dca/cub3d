@@ -1,22 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   open_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/08 19:43:02 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/17 15:29:00 by pemiguel         ###   ########.fr       */
+/*   Created: 2023/05/17 17:25:00 by pemiguel          #+#    #+#             */
+/*   Updated: 2023/05/17 18:05:21 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "libft.h"
+#include "cub3d.h"
 
-void	ft_putstr_fd(char *s, int fd)
+size_t	steps_to_path(const char *setting)
 {
-	if (s)
+	size_t	i;
+
+	i = 0;
+	while (setting[i])
 	{
-		write(fd, s, sizeof(char) * ft_strlen(s));
+		if (setting[i] == 32)
+			break ;
+		i += 1;
+	}
+	return (ft_skip_spaces(setting + i));
+}
+
+bool	open_textures(t_data *img, t_game *game)
+{
+	size_t	i;
+
+	i = 0;
+	while (game->settings[i])
+	{
+		
+		i += 1;
 	}
 }

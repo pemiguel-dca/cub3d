@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:05:05 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/16 20:20:48 by pnobre-m         ###   ########.fr       */
+/*   Updated: 2023/05/17 17:45:08 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@ void	__debug_map(const t_game *game)
 	if (!game->map)
 		return ;
 	for (int i = 0; game->map[i]; ++i)
-	{
 		printf("%s\n", game->map[i]);
-	}
+	printf("Player's cardinal direction: %c\n", game->cardinal_direction);
 }
 
 void	__debug_identifiers(const t_game *game)
@@ -44,7 +43,6 @@ inline static void	mlx_fill_image_color(t_data *data, int w, int h, int color)
 int	main(int argc, char **argv)
 {
 	char	**buffer;
-	size_t	buf_len;
 	t_game	game;
 	int		fd;
 
@@ -60,35 +58,31 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	buffer = get_buffer(fd);
-	buf_len = 0;
-	while (buffer[buf_len])
-		buf_len += 1;
-	if (buf_len < 7) {
-		printf("Invalid map\n");
+	if (!good_buffer(buffer))
+	{
+		free_2Darrays(buffer);
+		close(fd);
 		return (EXIT_FAILURE);
 	}
 	game = generate_game(buffer);
-	__debug_identifiers(&game);
-	__debug_map(&game);
 	if (!is_valid_map(&game))
 	{
-		printf("Invalid map\n");
 		free_game(&game);
 		close(fd);
 		return (EXIT_FAILURE);
 	}
-
+	__debug_identifiers(&game);
+	__debug_map(&game);
 	start_window(&game);
-
 	t_data	img;
 
-	img.img = mlx_new_image(game.mlx, 960, 540);
+	img.img = mlx_new_image(game.mlx, WIDTH, HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 								&img.endian);
 
 	// TODO create image from color and present it, after this start raycasting shit
 	// also we'll need multiple images on the final game, no sense in having any image fields in t_game
-	mlx_fill_image_color(&img, 960, 540, 0x00FF0000);
+	mlx_fill_image_color(&img, WIDTH, HEIGHT, 0x00FF0000);
 	mlx_put_image_to_window(game.mlx, game.win, img.img, 0, 0);
 
 	mlx_key_hook(game.win, &keys_pressed, &game);

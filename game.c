@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/16 20:16:11 by pnobre-m         ###   ########.fr       */
+/*   Updated: 2023/05/17 17:38:47 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,16 @@ static char	*generate_buffer(int fd, char *buffer)
 
 char	**get_buffer(int fd)
 {
+	/*TODO: tens um leak aqui quando o map tem linhas vazias
+	Exemplo:
+	NO ./path_to_the_north_texture
+	WE ./path_to_the_west_texture
+	F 220,30,0
+	SO ./path_to_the_south_texture
+	EA ./path_to_the_east_texture
+
+
+	*/
 	char	*raw;
 	char	**buffer;
 
@@ -59,14 +69,11 @@ t_game	generate_game(char **buffer)
 		buffer += 1;
 	}
 	return ((t_game){.map = buffer,
-		.settings = settings, .rc = NULL});
+		.settings = settings});
 }
 
 void	free_game(t_game *game)
 {
-	size_t	i;
-
-	i = 0;
 	if (game->map)
 		free_2Darrays(game->map);
 	if (game->settings)
@@ -76,6 +83,4 @@ void	free_game(t_game *game)
 		mlx_destroy_window(game->mlx, game->win);
 		free(game->mlx);
 	}
-	if (game->rc)
-		free(game->rc);
 }
