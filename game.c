@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/17 17:38:47 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/17 20:13:26 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	**get_buffer(int fd)
 	SO ./path_to_the_south_texture
 	EA ./path_to_the_east_texture
 
-
+	n tem???
 	*/
 	char	*raw;
 	char	**buffer;
@@ -57,27 +57,52 @@ char	**get_buffer(int fd)
 
 t_game	generate_game(char **buffer)
 {
-	char		**settings;
-	size_t		i;
+	int w;
+	int h;
+	t_game	game;
+	size_t	sprites_i;
+	size_t	colors_i;
 
-	settings = malloc(sizeof(char *) * N_SETTINGS);
-	i = 0;
-	while (i < N_SETTINGS)
+	w = WIDTH;
+	h = HEIGHT;
+	sprites_i = 0;
+	colors_i = 0;
+	while (sprites_i + colors_i < N_SETTINGS)
 	{
-		settings[i] = *buffer;
-		i += 1;
+		char **split = ft_split(*buffer, ' ');
+		if (!split[2])
+		{
+			void	*sprite = mlx_xpm_file_to_image(game.mlx, split[1], &w, &h);
+			if (ft_strcmp(split[0], "NO"))
+				game.sprites.north = sprite;
+			else if (ft_strcmp(split[0], "WE"))
+				game.sprites.west = sprite;
+			else if (ft_strcmp(split[0], "SO"))
+				game.sprites.south = sprite;
+			else if (ft_strcmp(split[0], "EA"))
+				game.sprites.east = sprite;
+			sprites_i += 1;
+		}
+		else
+		{
+			t_color color = (t_color){ft_atoi(split[1]), ft_atoi(split[2]), ft_atoi(split[3])};
+			if (*split[0] == 'C')
+				game.colors.ceil = color;
+			else if (*split[0] == 'F')
+				game.colors.floor = color;
+			colors_i += 1;
+		}
+		free(split);
 		buffer += 1;
 	}
-	return ((t_game){.map = buffer,
-		.settings = settings});
+	game.map = buffer;
+	return (game);
 }
 
 void	free_game(t_game *game)
 {
 	if (game->map)
 		free_2Darrays(game->map);
-	if (game->settings)
-		free_2Darrays(game->settings);
 	if (game->mlx && game->win)
 	{
 		mlx_destroy_window(game->mlx, game->win);

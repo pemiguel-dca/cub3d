@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_settings.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 16:13:57 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/17 17:21:20 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/17 20:14:07 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,18 +103,19 @@ static char	**get_types(t_game *game)
 				get_len(game->settings[i]));
 		i += 1;
 	}
-	types[i] = 0;
+	types[i] = NULL;
 	return (types);
 }
 
 bool	validate_settings(t_game *game)
 {
+	char	*settings[N_SETTINGS];
 	size_t	i;
 	char	**types;
 
 	types = get_types(game);
 	i = 0;
-	while (game->settings[i])
+	while (i < N_SETTINGS)
 	{
 		if (!validate_types(types)
 			|| ((game->settings[i][0] == 'F' || game->settings[i][0] == 'C')

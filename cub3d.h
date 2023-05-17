@@ -18,6 +18,7 @@
 # define HEIGHT 540
 # define WIN_NAME "cub3D"
 # define N_SETTINGS 6
+# define N_CARDINAL_DIRECTIONS 4
 
 /*KEY CODES*/
 
@@ -29,7 +30,9 @@
 # define S 115
 # define D 100
 
-typedef struct {
+typedef struct
+{
+	char	direction[3];
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -39,11 +42,33 @@ typedef struct {
 
 typedef struct
 {
-	char			**map;
-	char			**settings;
-	char			cardinal_direction;
-	void			*mlx;
-	void			*win;
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
+}	t_color;
+
+typedef struct
+{
+	void	*north;
+	void	*east;
+	void	*south;
+	void	*west;
+}	t_sprites;
+
+typedef struct
+{
+	t_color	ceil;
+	t_color	floor;
+}	t_colors;
+
+typedef struct
+{
+	t_sprites	sprites;
+	char		**map;
+	t_colors	colors;
+	char		cardinal_direction;
+	void		*mlx;
+	void		*win;
 }	t_game;
 
 char		**get_buffer(int fd);
@@ -130,10 +155,8 @@ static inline bool	has_extension(const char *path)
 	char	*sub;
 
 	sub = ft_strrchr(path, '.');
-	if (!sub || ft_strlen(sub + 1) != sizeof(EXTENSION) - 1
-		|| ft_strncmp(sub + 1, EXTENSION, sizeof(EXTENSION) - 1))
-		return (false);
-	return (true);
+	return (sub && ft_strlen(sub + 1) == sizeof(EXTENSION) - 1
+		&& !ft_strncmp(sub + 1, EXTENSION, sizeof(EXTENSION) - 1));
 }
 
 bool	is_valid_map(t_game *game);
