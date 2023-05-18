@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 16:13:57 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/18 16:34:33 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/18 17:10:48 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,10 @@ static bool	validate_textures(char *path)
 	void	*mlx_tmp;
 	void	*texture;
 
-	//path += ft_skip_spaces(path);
-	//path[ft_strlen(path)] = '\0';
-	printf("path %s", path);
 	mlx_tmp = mlx_init();
 	w = WIDTH;
 	h = HEIGHT;
-	texture = mlx_xpm_file_to_image(mlx_tmp, path + 1, &w, &h);
+	texture = mlx_xpm_file_to_image(mlx_tmp, path, &w, &h);
 	if (!texture)
 	{
 		free(mlx_tmp);
@@ -141,9 +138,9 @@ bool	valid_settings(char **buffer)
 	while (i < N_SETTINGS)
 	{
 		if (!validate_types(types) || ((buffer[i][0] == 'F' || buffer[i][0] == 'C')
-			&& !validate_rgb_codes(buffer[i] + ft_strlen(types[i])))
-			|| ((buffer[i][0] != 'F' || buffer[i][0] != 'C')
-			&& !validate_textures(buffer[i] + ft_strlen(types[i]))))
+			&& !validate_rgb_codes(buffer[i] + 1 + ft_strlen(types[i])))
+			|| ((buffer[i][0] != 'F' && buffer[i][0] != 'C')
+			&& !validate_textures((buffer[i] + ft_strlen(types[i])+ ft_skip_spaces(buffer[i] + ft_strlen(types[i]))))))
 		{
 			free_2Darrays(types);
 			return (false);
