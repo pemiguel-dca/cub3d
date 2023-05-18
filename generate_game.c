@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate_game.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/18 15:54:06 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/18 17:53:44 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static char	get_cardinal_direction(const char **map)
 		}
 		i += 1;
 	}
+	return ('\0');
 }
 
 static void	init_sprites(t_game *game, const char *c_dir, const char *path)

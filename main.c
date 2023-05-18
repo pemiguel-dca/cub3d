@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:05:05 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/18 15:40:47 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/18 17:46:35 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "raycaster.h"
 #include "cub3d.h"
 
 void	__debug_map(const char **map)
@@ -65,7 +66,8 @@ int	main(int argc, char **argv)
 	// TODO create image from color and present it, after this start raycasting shit
 	// also we'll need multiple images on the final game, no sense in having any image fields in t_game
 	// mlx_fill_image_color(&img, WIDTH, HEIGHT, 0x00FF0000);
-	mlx_put_image_to_window(game.mlx, game.win, game.sprites.east, 0, 0);
+
+	start(&game);
 
 	mlx_key_hook(game.win, &keys_pressed, &game);
 	mlx_hook(game.win, 17, 0, &top_right, &game);

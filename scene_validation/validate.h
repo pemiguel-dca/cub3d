@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 12:30:08 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/18 12:45:09 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/18 17:47:08 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,6 @@ static inline size_t	get_last_occur_row(const char **map, size_t row)
 bool	valid_args(int fd, size_t args, const char *file_name);
 bool	valid_buffer(const char **buffer);
 bool	valid_scene(char **buffer);
-
-static inline bool is_cardinal_direction(char c)
-{
-	return (c == 'N' || c == 'S' || c == 'W' || c == 'E');
-}
 
 static inline bool	has_extension(const char *path)
 {

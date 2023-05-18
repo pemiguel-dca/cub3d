@@ -1,7 +1,8 @@
 SRCS=main.c destroy.c mlx_keys.c \
 		generate_buffer.c generate_game.c \
 		scene_validation/validate_settings.c scene_validation/validate.c scene_validation/validate_map.c \
-		
+		raycaster.c
+
 
 OBJS=$(SRCS:.c=.o)
 

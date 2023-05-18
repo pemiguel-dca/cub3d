@@ -9,7 +9,6 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include "scene_validation/validate.h"
-# include "raycaster.h"
 # include "error_msg.h"
 
 # define WIDTH 960
@@ -66,6 +65,11 @@ typedef struct
 	void		*mlx;
 	void		*win;
 }	t_game;
+
+static inline bool is_cardinal_direction(char c)
+{
+	return (c == 'N' || c == 'S' || c == 'W' || c == 'E');
+}
 
 /*generate_buffer.c*/
 
