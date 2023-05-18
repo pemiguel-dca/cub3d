@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:21:59 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/17 17:48:35 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/18 12:45:20 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,26 @@ typedef struct
 	int	draw_start;
 	int	draw_end;
 }	t_draw;
+
+static inline t_vector	player_pos(const char **buffer)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	while (buffer[i])
+	{
+		j = 0;
+		while (buffer[i][j])
+		{
+			if (is_cardinal_direction(buffer[i][j]))
+				break ;
+			j += 1;
+		}
+		i += 1;
+	}
+	return ((t_vector){.x = j, .y = i});
+}
 
 static inline t_vector	write_vector(double x, double y)
 {

@@ -1,32 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validate.h                                         :+:      :+:    :+:   */
+/*   destroy.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/14 12:30:08 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/15 21:25:47 by pemiguel         ###   ########.fr       */
+/*   Created: 2023/05/18 11:04:28 by pemiguel          #+#    #+#             */
+/*   Updated: 2023/05/18 11:05:28 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VALIDATE_H
-# define VALIDATE_H
+#include "cub3d.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdbool.h>
-# include "../libft/libft.h"
-
-typedef struct
+void	free_2Darrays(char **array)
 {
-	int	no;
-	int	so;
-	int	we;
-	int	ea;
-	int	f;
-	int	c;
-}	t_validate;
+	size_t	i;
 
-#endif
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i += 1;
+	}
+	free(array);
+}
+
+void	free_game(t_game *game)
+{
+	if (game->map)
+		free_2Darrays(game->map);
+	if (game->mlx && game->win)
+	{
+		mlx_destroy_window(game->mlx, game->win);
+		free(game->mlx);
+	}
+}
+

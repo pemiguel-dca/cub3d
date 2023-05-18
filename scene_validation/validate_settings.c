@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_settings.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 16:13:57 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/17 20:14:07 by pnobre-m         ###   ########.fr       */
+/*   Updated: 2023/05/18 12:01:33 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,36 +90,35 @@ static size_t	get_len(char *str)
 	return (i);
 }
 
-static char	**get_types(t_game *game)
+static char	**get_types(char **settings)
 {
 	char	**types;
 	size_t	i;
 
 	types = malloc((N_SETTINGS + 1) * sizeof(char *));
 	i = 0;
-	while (game->settings[i])
+	while (settings[i])
 	{
-		types[i] = ft_substr(game->settings[i], 0,
-				get_len(game->settings[i]));
+		types[i] = ft_substr(settings[i], 0,
+				get_len(settings[i]));
 		i += 1;
 	}
 	types[i] = NULL;
 	return (types);
 }
 
-bool	validate_settings(t_game *game)
+bool	valid_settings(char **buffer)
 {
-	char	*settings[N_SETTINGS];
 	size_t	i;
 	char	**types;
 
-	types = get_types(game);
+	types = get_types(buffer);
 	i = 0;
 	while (i < N_SETTINGS)
 	{
 		if (!validate_types(types)
-			|| ((game->settings[i][0] == 'F' || game->settings[i][0] == 'C')
-			&& !validate_rgb_codes(game->settings[i] + ft_strlen(types[i]))))
+			|| ((buffer[i][0] == 'F' || buffer[i][0] == 'C')
+			&& !validate_rgb_codes(buffer[i] + ft_strlen(types[i]))))
 		{
 			free_2Darrays(types);
 			return (false);

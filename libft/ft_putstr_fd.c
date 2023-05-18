@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/08 19:43:02 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/17 15:29:00 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/18 11:40:59 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,5 @@ void	ft_putstr_fd(char *s, int fd)
 	{
 		write(fd, s, sizeof(char) * ft_strlen(s));
 	}
+	write(fd, "\n", 1);
 }

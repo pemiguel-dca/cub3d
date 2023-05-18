@@ -6,64 +6,81 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:26:45 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/17 17:43:17 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/18 12:06:08 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-static inline bool	can_move(t_game *game)
+bool	valid_args(int fd, size_t args, const char *file_name)
 {
-	size_t	i;
-	size_t	j;
+	char	*msg;
 
-	i = 0;
-	while (game->map[i])
+	if (args != 2 || !has_extension(file_name))
+		return (error_msg(SYNTAX));
+	if (fd == -1)
 	{
-		j = 0;
-		while (game->map[i][j])
-		{
-			if (is_cardinal_direction(game->map[i][j])
-				&& (game->map[i][j + 1] == '0'
-				|| game->map[i][j - 1] == '0'
-				|| game->map[i + 1][j] == '0'
-				||game->map[i - 1][j] == '0'))
-			{
-				game->cardinal_direction = game->map[i][j];
-				return (true);
-			}
-			j += 1;
-		}
-		i += 1;
+		msg = ft_strjoin(OPENING_FILE, file_name);
+		error_msg(msg);
+		free(msg);
+		return (false);
 	}
-	return (error_msg(CANT_MOVE));
+	return (true);
 }
 
-bool	is_valid_map(t_game *game)
+bool	valid_buffer(const char **buffer)
+{
+	size_t	buf_len;
+
+	if (!buffer)
+		return (error_msg(EMPTY_FILE));
+	buf_len = 0;
+	while (buffer[buf_len])
+		buf_len += 1;
+	if (buf_len < 7)
+		return (error_msg(WRONG_FORMAT));
+	return (true);
+}
+
+static bool	valid_char(char to_verify)
+{
+	size_t	i;
+
+	i = 0;
+	while (ACCEPTABLE_CHARS[i])
+	{
+		if (to_verify == ACCEPTABLE_CHARS[i])
+			return (true);
+		i += 1;
+	}
+	return (false);
+}
+
+bool	valid_scene(char **buffer)
 {
 	size_t	i;
 	size_t	j;
 	size_t	c_directions;
 
-	if (!game->map || !validate_settings(game)
-		|| !surrounded_by_walls(game))
+	if (!valid_settings(buffer)
+		|| !valid_map((const char **)buffer + N_SETTINGS))
 		return (false);
-	i = 0;
+	i = N_SETTINGS;
 	c_directions = 0;
-	while (game->map[i])
+	while (buffer[i])
 	{
 		j = 0;
-		while (game->map[i][j])
+		while (buffer[i][j])
 		{
-			if (!verify_char(game->map[i][j]))
+			if (!valid_char(buffer[i][j]))
 				return (error_msg(INVALID_CHAR));
-			if (is_cardinal_direction(game->map[i][j]))
+			if (is_cardinal_direction(buffer[i][j]))
 				c_directions += 1;
 			j += 1;
 		}
 		i += 1;
 	}
-	if (c_directions != 1 || (c_directions == 1 && !can_move(game)))
-		return (false);
+	if (c_directions != 1)
+		return (error_msg(ONE_PLAYER));
 	return (true);
 }
