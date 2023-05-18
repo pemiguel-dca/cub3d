@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:05:05 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/18 12:23:57 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:40:47 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	__debug_scene(char **buffer)
 	printf("\n");
 	__debug_map(buffer + i);
 }
+
 void	start_window(t_game *game)
 {
 	game->mlx = mlx_init();
@@ -61,15 +62,15 @@ int	main(int argc, char **argv)
 	__debug_scene(buffer);
 	game = generate_game(buffer);
 	printf("Player's cardinal direction: %c\n", game.cardinal_direction);
-	start_window(&game);
 	// TODO create image from color and present it, after this start raycasting shit
 	// also we'll need multiple images on the final game, no sense in having any image fields in t_game
 	// mlx_fill_image_color(&img, WIDTH, HEIGHT, 0x00FF0000);
-	// mlx_put_image_to_window(game.mlx, game.win, img.img, 0, 0);
+	mlx_put_image_to_window(game.mlx, game.win, game.sprites.east, 0, 0);
 
 	mlx_key_hook(game.win, &keys_pressed, &game);
 	mlx_hook(game.win, 17, 0, &top_right, &game);
 	mlx_loop(game.mlx);
+
 	free_game(&game);
 	close(fd);
 }

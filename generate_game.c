@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/18 12:37:42 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:54:06 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	init_sprites(t_game *game, const char *c_dir, const char *path)
 
 	w = WIDTH;
 	h = HEIGHT;
-	sprite = mlx_xpm_file_to_image(game->mlx, path, &w, &h);
+	sprite = mlx_xpm_file_to_image(game->mlx, "./imgs/wall.xpm", &w, &h);
 	if (ft_strcmp(c_dir, "NO") == 0
 		|| ft_strcmp(c_dir, "N") == 0)
 		game->sprites.north = sprite;
@@ -54,15 +54,18 @@ static void	init_sprites(t_game *game, const char *c_dir, const char *path)
 		game->sprites.east = sprite;
 }
 
-static void	init_colors(t_game *game, char **split)
+static void	init_colors(t_game *game, char *codes, char type)
 {
 	t_color	color;
+	char	**rgb_codes;
 
-	color = (t_color){ft_atoi(split[1]), ft_atoi(split[2]), ft_atoi(split[3])};
-	if (*split[0] == 'C')
+	rgb_codes = ft_split(codes, ',');
+	color = (t_color){ft_atoi(rgb_codes[0]), ft_atoi(rgb_codes[1]), ft_atoi(rgb_codes[2])};
+	if (type == 'C')
 		game->colors.ceil = color;
-	else if (*split[0] == 'F')
+	else if (type == 'F')
 		game->colors.floor = color;
+	free_2Darrays(rgb_codes);
 }
 
 t_game	generate_game(char **buffer)
@@ -71,15 +74,16 @@ t_game	generate_game(char **buffer)
 	size_t	settings_i;
 	char	**split;
 
+	start_window(&game);
 	settings_i = 0;
 	while (settings_i < N_SETTINGS)
 	{
 		split = ft_split(*buffer, ' ');
 		free(*buffer);
-		if (!split[2])
-			init_sprites(&game, split[0], split[1]);
+		if (is_color(*split[0]))
+			init_colors(&game, split[1], *split[0]);
 		else
-			init_colors(&game, split);
+			init_sprites(&game, split[0], split[1]);
 		free_2Darrays(split);
 		buffer += 1;
 		settings_i += 1;

@@ -72,8 +72,14 @@ typedef struct
 char	**get_buffer(int fd);
 
 /*generate_game.c*/
+void	start_window(t_game *game);
 
 t_game	generate_game(char **buffer);
+
+static inline bool	is_color(char c)
+{
+	return (c == 'F' || c == 'C');
+}
 
 /*mlx_keys.c*/
 

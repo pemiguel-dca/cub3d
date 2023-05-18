@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:43 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/18 12:46:29 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:40:41 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # define OPENING_FILE "Cannot open file: "
 # define SYNTAX "Syntax: ./cub3d <*.cub>"
 # define ONE_PLAYER "Map must have ONE player"
-# define OPEN_TEXTURE "Cannot open the texture"
+# define OPEN_TEXTURE "Cannot open texture"
 # define WRONG_FORMAT "Wrong format"
 # define EMPTY_FILE "File is empty"
 # define RGB_FORMAT "RGB format: [0, 255], [0, 255], [0, 255]"
