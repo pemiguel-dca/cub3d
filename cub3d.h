@@ -114,6 +114,6 @@ void	free_game(t_game *game);
 void	mlx_fill_image_color(t_data *data, int w, int h, int color);
 t_data	create_new_image(void *mlx);
 void	draw(t_game *game, int x, int y, int color);
-void	draw_vertical_line(t_game *game, t_draw *draw_prop, int stripe);
+void	draw_vertical_line(t_game *game, t_draw draw_prop, int stripe);
 void	draw_minimap(t_game *game);
 #endif // CUB3D_H

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 12:07:37 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/19 17:12:04 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/19 18:07:35 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,28 +19,24 @@ static inline void __debug_vector(const t_vec2 *vec)
 
 }
 
-t_draw	*get_draw_properties(t_raycaster *rc, t_dda *dda)
+t_draw	get_draw_properties(t_raycaster *rc, t_dda *dda)
 {
-	t_draw	*draw;
-
-	draw = malloc(sizeof(t_draw *));
-	if (!draw)
-		return (NULL);
+	t_draw	draw;
 	/*Calculate the ray distance to the wall that was hit, depending on which side*/
 	if (dda->hit_side == 0)
 		rc->ray_distance_to_wall = dda->length_to_first_step.x - dda->length_to_next_step.x;
 	else
 		rc->ray_distance_to_wall = dda->length_to_first_step.y - dda->length_to_next_step.y;
 	printf("ray distance to wall: %f\n", rc->ray_distance_to_wall);
-	draw->line_height = (int)(HEIGHT / rc->ray_distance_to_wall);
-	printf("line_height: %d\n", draw->line_height);
+	draw.line_height = (int)(HEIGHT / rc->ray_distance_to_wall);
+	printf("line_height: %d\n", draw.line_height);
 	/*Find the lowest pixel and the highest pixel to fill in the curr stripe*/
-	draw->draw_start = -draw->line_height / 2 + HEIGHT / 2;
-	if (draw->draw_start < 0)
-		draw->draw_start = 0;
-	draw->draw_end = draw->line_height / 2 + HEIGHT / 2;
-	if (draw->draw_end >= HEIGHT)
-		draw->draw_end = HEIGHT - 1;
+	draw.draw_start = -draw.line_height / 2 + HEIGHT / 2;
+	if (draw.draw_start < 0)
+		draw.draw_start = 0;
+	draw.draw_end = draw.line_height / 2 + HEIGHT / 2;
+	if (draw.draw_end >= HEIGHT)
+		draw.draw_end = HEIGHT - 1;
 	return (draw);
 }
 
@@ -65,6 +61,8 @@ void	dda_algo(t_raycaster *rc, t_dda *dda, const char **map)
 			rc->curr_ray_square.y += dda->step.y;
 			dda->hit_side = 1;
 		}
+		printf("length_to_first_step");
+		__debug_vector(&dda->length_to_first_step);
 		if (map[(int)rc->curr_ray_square.y][(int)rc->curr_ray_square.x] == '1')
 			dda->hit_wall = true;
 	}
@@ -78,7 +76,7 @@ void	step_in_which_direction(t_raycaster *rc, t_dda *dda)
 	if (rc->ray_dir.x > 0)
 	{
 		dda->step.x = -1;
-		dda->length_to_first_step.x = (rc->player_pos.x * (int)rc->curr_ray_square.x) * dda->length_to_next_step.x;
+		dda->length_to_first_step.x = (rc->player_pos.x - (int)rc->curr_ray_square.x) * dda->length_to_next_step.x;
 	}
 	else
 	{
@@ -88,7 +86,7 @@ void	step_in_which_direction(t_raycaster *rc, t_dda *dda)
 	if (rc->ray_dir.y > 0)
 	{
 		dda->step.y = -1;
-		dda->length_to_first_step.y = (rc->player_pos.y * (int)rc->curr_ray_square.y) * dda->length_to_next_step.y;
+		dda->length_to_first_step.y = (rc->player_pos.y - (int)rc->curr_ray_square.y) * dda->length_to_next_step.y;
 	}
 	else
 	{
@@ -112,11 +110,13 @@ and the left side of the screen gets coordinate -1.*/
 	/*The ray starts at the position of the player (player_pos).*/
 	tmp = add_vectors(rc.player_dir, rc.player_camera_plane);
 	rc.fov = 66;
-	rc.camera.x = 2 * stripe / (double)WIDTH;
-	rc.camera.x -= 1;
+	// camera = grande fixe
+	rc.camera.x = 2 * stripe / (double)WIDTH - 1;
+	printf("camera.x : %f\n", rc.camera.x);
 	rc.ray_dir.x = tmp.x * rc.camera.x;
 	rc.ray_dir.y = tmp.y * rc.camera.x;
 	/*curr_ray_square represent the current square of the map the ray is in.*/
+	printf("%ld sprite: ", stripe);
 	rc.curr_ray_square = write_vector(floor(rc.player_pos.x), floor(rc.player_pos.y));
 	return (rc);
 }
@@ -126,8 +126,9 @@ void	start(t_game *game)
 	size_t		stripe;
 	t_raycaster	rc;
 	t_dda		dda;
-	t_draw		*draw_prop;
+	t_draw		draw_prop;
 
+	// TODO stripe 0 = half
 	stripe = 0;
 	game->data = create_new_image(game->mlx);
 	while (stripe < WIDTH)/*For every vertical stripe of the screen*/
@@ -140,9 +141,8 @@ void	start(t_game *game)
 		/*After finding in which direction where going we can perform the DDA algorithm (see video in .h file)*/
 		dda_algo(&rc, &dda, (const char **)game->map);
 		draw_prop = get_draw_properties(&rc, &dda);
-		printf("%d %d %d\n", draw_prop->draw_start, draw_prop->draw_end, draw_prop->line_height);
+		printf("%d %d %d\n", draw_prop.draw_start, draw_prop.draw_end, draw_prop.line_height);
 		draw_vertical_line(game,draw_prop, stripe);//this function is supost to do the drawing
-		free(draw_prop);
 		stripe += 1;
 	}
 	draw_minimap(game);

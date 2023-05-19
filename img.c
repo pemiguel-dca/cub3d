@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 14:28:21 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/19 16:34:28 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/19 17:36:19 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,17 @@ void	draw_minimap(t_game *game)
 	}
 }
 
-void	draw_vertical_line(t_game *game, t_draw *draw_prop, int stripe)
+void	draw_vertical_line(t_game *game, t_draw draw_prop, int stripe)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < draw_prop->draw_start)
+	while (i < draw_prop.draw_start)
 	{
 		mlx_fill_image_color(&game->data, stripe, i, WHITE);
 		i += 1;
 	}
-	while (i < draw_prop->draw_end)
+	while (i < draw_prop.draw_end)
 	{
 		mlx_fill_image_color(&game->data, stripe, i, BLACK);
 		i += 1;
