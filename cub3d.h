@@ -15,6 +15,9 @@
 # define HEIGHT 540
 # define WIN_NAME "cub3D"
 
+# define TEXTURE_WIDTH 	64
+# define TEXTURE_HEIGHT 64
+
 /*KEY CODES*/
 
 # define ESC 65307
@@ -64,7 +67,18 @@ typedef struct
 	char		cardinal_direction;
 	void		*mlx;
 	void		*win;
+	t_data		data;
 }	t_game;
+
+/*add this to raycaster.h in the end*/
+
+typedef struct
+{
+	int	line_height;
+	int	draw_start;
+	int	draw_end;
+}	t_draw;
+
 
 static inline bool is_cardinal_direction(char c)
 {
@@ -95,4 +109,11 @@ int		keys_pressed(int key, t_game *game);
 void	free_2Darrays(char **stuff);
 void	free_game(t_game *game);
 
+/*img.c*/
+
+void	mlx_fill_image_color(t_data *data, int w, int h, int color);
+t_data	create_new_image(void *mlx);
+void	draw(t_game *game, int x, int y, int color);
+void	draw_vertical_line(t_game *game, t_draw *draw_prop, int stripe);
+void	draw_minimap(t_game *game);
 #endif // CUB3D_H

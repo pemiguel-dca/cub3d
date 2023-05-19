@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:05:05 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/18 17:46:35 by pnobre-m         ###   ########.fr       */
+/*   Updated: 2023/05/19 14:27:13 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,6 @@ void	start_window(t_game *game)
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, WIN_NAME);
 }
 
-/*
-inline static void	mlx_fill_image_color(t_data *data, int w, int h, int color)
-{
-	ft_memset(data->addr, color, h * data->line_length + w * (data->bits_per_pixel / 8));
-}
-*/
-
 int	main(int argc, char **argv)
 {
 	int		fd;
@@ -62,7 +55,6 @@ int	main(int argc, char **argv)
 	// TODO refactor validation of reading and parsing file identifiers
 	__debug_scene(buffer);
 	game = generate_game(buffer);
-	printf("Player's cardinal direction: %c\n", game.cardinal_direction);
 	// TODO create image from color and present it, after this start raycasting shit
 	// also we'll need multiple images on the final game, no sense in having any image fields in t_game
 	// mlx_fill_image_color(&img, WIDTH, HEIGHT, 0x00FF0000);

@@ -1,14 +1,14 @@
 SRCS=main.c destroy.c mlx_keys.c \
 		generate_buffer.c generate_game.c \
 		scene_validation/validate_settings.c scene_validation/validate.c scene_validation/validate_map.c \
-		raycaster.c
+		raycaster.c img.c
 
 
 OBJS=$(SRCS:.c=.o)
 
 CC=cc
 C_FLAGS=-Wall -Wextra -Werror -fsanitize=leak
-MLX_FLAGS=-L mlx -lmlx -Ilmlx -lXext -lX11 -lbsd
+MLX_FLAGS=-L mlx -lmlx -Ilmlx -lXext -lX11 -lbsd -lm
 RM=rm -f
 LIBFT=libft/libft.a
 NAME=cub3d
