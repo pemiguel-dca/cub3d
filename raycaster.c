@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 12:07:37 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/20 18:08:04 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/20 18:59:17 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	step_in_which_direction(t_raycaster *rc, t_dda *dda)
 
 static void	init_rc(t_game *game, t_raycaster *rc, size_t stripe)
 {
-	/*TODO: do function to get player direction independent on the cardinal direction that he has*/
+	/*TODO: do function to get player direction dependent on the cardinal direction that he has*/
 	/*camera.x is the x-coordinate on the camera plane that the current x-coordinate of the screen represents,
 	done this way so that the right side of the screen will get coordinate 1, the center of the screen gets coordinate 0,
 	and the left side of the screen gets coordinate -1.*/
@@ -107,6 +107,7 @@ static void	init_rc(t_game *game, t_raycaster *rc, size_t stripe)
 	rc->player_pos = player_pos(game->map);
 	rc->fov = 66;
 	rc->camera.x = 2 * stripe / (double)WIDTH - 1;
+	/*Error was here since I was adding before the multiplication*/
 	rc->ray_dir = (t_vec2){.x = rc->player_dir.x + rc->player_camera_plane.x * rc->camera.x,
 	.y = rc->player_dir.y + rc->player_camera_plane.y * rc->camera.x};
 	/*curr_ray_square represent the current square of the map the ray is in.*/
@@ -142,7 +143,7 @@ void	start(t_game *game)
 
 	stripe = 0;
 	game->data = create_new_image(game->mlx);
-	while (stripe < WIDTH)
+	while (stripe < 4)
 	{
 		/*camera.x is the x-coordinate on the camera plane that the current x-coordinate of the screen represents(0+ for right side, 0 for middle, -0 for left)*/
 		init_rc(game, &rc, stripe);
