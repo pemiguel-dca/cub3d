@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate_game.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/18 17:53:44 by pnobre-m         ###   ########.fr       */
+/*   Updated: 2023/05/20 15:56:11 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,19 @@ static void	init_sprites(t_game *game, const char *c_dir, const char *path)
 
 	w = WIDTH;
 	h = HEIGHT;
-	sprite = mlx_xpm_file_to_image(game->mlx, "./imgs/wall.xpm", &w, &h);
+	sprite = mlx_xpm_file_to_image(game->mlx, path, &w, &h);
 	if (ft_strcmp(c_dir, "NO") == 0
 		|| ft_strcmp(c_dir, "N") == 0)
-		game->sprites.north = sprite;
+		game->sprites.north = create_textures(sprite);
 	else if (ft_strcmp(c_dir, "WE") == 0
 		|| ft_strcmp(c_dir, "W") == 0)
-		game->sprites.west = sprite;
+		game->sprites.west = create_textures(sprite);
 	else if (ft_strcmp(c_dir, "SO") == 0
 		|| ft_strcmp(c_dir, "S") == 0)
-		game->sprites.south = sprite;
+		game->sprites.south = create_textures(sprite);
 	else if (ft_strcmp(c_dir, "EA") == 0
 		|| ft_strcmp(c_dir, "E") == 0)
-		game->sprites.east = sprite;
+		game->sprites.east = create_textures(sprite);
 }
 
 static void	init_colors(t_game *game, char *codes, char type)

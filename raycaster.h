@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   _raycaster.h                                       :+:      :+:    :+:   */
+/*   raycaster.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 11:21:59 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/19 14:54:17 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/20 16:23:22 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,15 @@ static inline t_vec2 add_vectors(t_vec2 v1, t_vec2 v2)
 
 	result.x = v1.x + v2.x;
 	result.y = v1.y + v2.y;
+	return (result);
+}
+
+static inline t_vec2 mult_vector(t_vec2 v1, double value)
+{
+	t_vec2	result;
+
+	result.x = v1.x * value;
+	result.y = v1.y * value;
 	return (result);
 }
 

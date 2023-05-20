@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:05:05 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/19 14:27:13 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/20 12:54:48 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	// TODO refactor validation of reading and parsing file identifiers
-	__debug_scene(buffer);
+	//__debug_scene(buffer);
 	game = generate_game(buffer);
 	// TODO create image from color and present it, after this start raycasting shit
 	// also we'll need multiple images on the final game, no sense in having any image fields in t_game

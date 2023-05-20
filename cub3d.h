@@ -11,6 +11,7 @@
 # include "scene_validation/validate.h"
 # include "error_msg.h"
 
+
 # define WIDTH 960
 # define HEIGHT 540
 # define WIN_NAME "cub3D"
@@ -30,7 +31,6 @@
 
 typedef struct
 {
-	char	direction[3];
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -47,10 +47,10 @@ typedef struct
 
 typedef struct
 {
-	void	*north;
-	void	*east;
-	void	*south;
-	void	*west;
+	t_data	north;
+	t_data	east;
+	t_data	south;
+	t_data	west;
 }	t_sprites;
 
 typedef struct
@@ -113,7 +113,14 @@ void	free_game(t_game *game);
 
 void	mlx_fill_image_color(t_data *data, int w, int h, int color);
 t_data	create_new_image(void *mlx);
+t_data	create_textures(void *sprite);
 void	draw(t_game *game, int x, int y, int color);
-void	draw_vertical_line(t_game *game, t_draw draw_prop, int stripe);
+void	draw_stripe(t_game *game, t_draw draw_prop, int stripe, int x);
 void	draw_minimap(t_game *game);
+
+static inline	int get_color(t_color color)
+{
+	return ((color.r << 16) | (color.g << 8) | color.b);
+}
+
 #endif // CUB3D_H

@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 16:13:57 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/18 17:10:48 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/20 14:59:14 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ static char	**get_types(char **settings)
 
 	types = malloc((N_SETTINGS + 1) * sizeof(char *));
 	i = 0;
-	while (settings[i])
+	while (i < N_SETTINGS)
 	{
 		types[i] = ft_substr(settings[i], 0,
 				get_len(settings[i]));

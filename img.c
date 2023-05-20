@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 14:28:21 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/19 17:36:19 by pnobre-m         ###   ########.fr       */
+/*   Updated: 2023/05/20 17:05:14 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,63 +34,50 @@ t_data	create_new_image(void *mlx)
 	return (data);
 }
 
-void	draw_4x4(t_game *game, int x, int y, int color)
+t_data	create_textures(void *sprite)
 {
-	size_t	i;
-	size_t	j;
+	t_data	data;
 
-	i = 0;
-	while (i < 4)
-	{
-		j = 0;
-		while (j < 4)
-		{
-			mlx_fill_image_color(&game->data, (x * 4 + i), (y * 4 + j), color);
-			j += 1;
-		}
-		i += 1;
-	}
+	data.img = sprite;
+	data.addr = mlx_get_data_addr(data.img, &data.bits_per_pixel, &data.line_length, &data.endian);
+
+	return (data);
 }
 
-void	draw_minimap(t_game *game)
-{
-	int	x;
-	int	y;
 
-	y = 0;
-	while (game->map[y])
-	{
-		x = 0;
-		while (game->map[y][x])
-		{
-			if (game->map[y][x] == '1')
-				draw_4x4(game, x, y, WHITE);
-			else
-				draw_4x4(game, x, y, YELLOW);
-			x += 1;
-		}
-		y += 1;
-	}
+
+int		get_pixel(t_data *img, int x, int y)
+{
+	/*Convert address to integer to access the pixels within the image itself*/
+	int	*pixels;
+
+	pixels = img->addr;
+    return (pixels[y * TEXTURE_WIDTH + x]);
 }
 
-void	draw_vertical_line(t_game *game, t_draw draw_prop, int stripe)
+void	draw_stripe(t_game *game, t_draw draw_prop, int stripe, int texture_x)
 {
 	size_t	i;
 
 	i = 0;
 	while (i < draw_prop.draw_start)
 	{
-		mlx_fill_image_color(&game->data, stripe, i, WHITE);
+		mlx_fill_image_color(&game->data, stripe, i, get_color(game->colors.ceil));
 		i += 1;
 	}
+	/*Draw start until draw end is where we do the drawing of the textures*/
 	while (i < draw_prop.draw_end)
 	{
-		mlx_fill_image_color(&game->data, stripe, i, BLACK);
+		/*Not sure how this works*/
+		double texture_coordinate = ((double)i - draw_prop.draw_start) / draw_prop.line_height;
+		// Interpolate the texture coordinate to get the exact position within the texture image
+		int texture_y = (int)(texture_coordinate * TEXTURE_HEIGHT);
+		mlx_fill_image_color(&game->data, stripe, i, get_pixel(&game->sprites.north, texture_x, texture_y));
 		i += 1;
 	}
 	while (i < HEIGHT)
 	{
-		mlx_fill_image_color(&game->data, stripe, i, WHITE);
+		mlx_fill_image_color(&game->data, stripe, i, get_color(game->colors.floor));
 		i += 1;
 	}
 }
