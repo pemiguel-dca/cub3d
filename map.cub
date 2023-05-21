@@ -1,6 +1,6 @@
 NO ./imgs/wall2.xpm
-WE ./imgs/wall.xpm
-SO ./imgs/wall2.xpm
+WE ./imgs/glass.xpm
+SO ./imgs/bookshelf.xpm
 EA ./imgs/wall.xpm
 F 220,30,0
 C 22,0,30
