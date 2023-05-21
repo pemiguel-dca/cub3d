@@ -6,12 +6,11 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 12:07:37 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/20 18:59:17 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/21 16:22:50 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
-#include "raycaster.h"
+#include "player.h"
 
 static inline void __debug_vector(const t_vec2 *vec)
 {
@@ -29,12 +28,12 @@ t_draw	get_draw_properties(t_raycaster *rc, t_dda *dda)
 		rc->ray_distance_to_wall = dda->length_to_first_step.y - dda->length_to_next_step.y;
 	draw.line_height = (int)(HEIGHT / rc->ray_distance_to_wall);
 	/*Find the lowest pixel and the highest pixel to fill in the curr stripe*/
-	draw.draw_start = -draw.line_height / 2 + HEIGHT / 2;
-	if (draw.draw_start < 0)
-		draw.draw_start = 0;
-	draw.draw_end = draw.line_height / 2 + HEIGHT / 2;
-	if (draw.draw_end >= HEIGHT)
-		draw.draw_end = HEIGHT - 1;
+	draw.start = -draw.line_height / 2 + HEIGHT / 2;
+	if (draw.start < 0)
+		draw.start = 0;
+	draw.end = draw.line_height / 2 + HEIGHT / 2;
+	if (draw.end >= HEIGHT)
+		draw.end = HEIGHT - 1;
 	return (draw);
 }
 
@@ -66,71 +65,59 @@ void	dda_algo(t_raycaster *rc, t_dda *dda, const char **map)
 	}
 }
 
-void	step_in_which_direction(t_raycaster *rc, t_dda *dda)
+void	step_in_which_direction(t_raycaster *rc, t_dda *dda, t_game *game)
 {
 	/*This function will calculate the direction of step and find the length to the first step
 	If the ray direction has a negative x component, step.x is -1, if it as a positive x-component, step.x is 1,
-	the same goes for the y component
+	the same goes for the y component*/
 
-	TENTAR PERCEBER AO CERTO O PORQUE
-	Supostamente tens de adicionar 0.5 ao player_pos(double) porque senao ele fica sempre com a posicao do jogador no ecra (int)*/
 	if (rc->ray_dir.x > 0)
 	{
 		dda->step.x = 1;
-		dda->length_to_first_step.x = ((rc->player_pos.x + 0.5) - (int)rc->curr_ray_square.x) * dda->length_to_next_step.x;
+		dda->length_to_first_step.x = (game->player.pos.x - (int)rc->curr_ray_square.x) * dda->length_to_next_step.x;
 	}
 	else
 	{
 		dda->step.x = -1;
-		dda->length_to_first_step.x = ((int)rc->curr_ray_square.x + 1.0f - (rc->player_pos.x + 0.5)) * dda->length_to_next_step.x;
+		dda->length_to_first_step.x = ((int)rc->curr_ray_square.x + 1.0f - game->player.pos.x) * dda->length_to_next_step.x;
 	}
 	if (rc->ray_dir.y > 0)
 	{
 		dda->step.y = -1;
-		dda->length_to_first_step.y = ((rc->player_pos.y + 0.5) - (int)rc->curr_ray_square.y) * dda->length_to_next_step.y;
+		dda->length_to_first_step.y = (game->player.pos.y - (int)rc->curr_ray_square.y) * dda->length_to_next_step.y;
 	}
 	else
 	{
 		dda->step.y = 1;
-		dda->length_to_first_step.y = ((int)rc->curr_ray_square.y + 1.0f - (rc->player_pos.y + 0.5)) * dda->length_to_next_step.y;
+		dda->length_to_first_step.y = ((int)rc->curr_ray_square.y + 1.0f - game->player.pos.y) * dda->length_to_next_step.y;
 	}
 }
 
 static void	init_rc(t_game *game, t_raycaster *rc, size_t stripe)
 {
-	/*TODO: do function to get player direction dependent on the cardinal direction that he has*/
 	/*camera.x is the x-coordinate on the camera plane that the current x-coordinate of the screen represents,
-	done this way so that the right side of the screen will get coordinate 1, the center of the screen gets coordinate 0,
-	and the left side of the screen gets coordinate -1.*/
-	rc->player_dir = write_vector(0, 1); //north direction
-	rc->player_camera_plane = write_vector(0.6, 0);
-	rc->player_pos = player_pos(game->map);
-	rc->fov = 66;
+	done this way so that the right side of the screen will get coordinate 1, the center of the screen gets coordinate 0,*/
 	rc->camera.x = 2 * stripe / (double)WIDTH - 1;
 	/*Error was here since I was adding before the multiplication*/
-	rc->ray_dir = (t_vec2){.x = rc->player_dir.x + rc->player_camera_plane.x * rc->camera.x,
-	.y = rc->player_dir.y + rc->player_camera_plane.y * rc->camera.x};
+	rc->ray_dir = (t_vec2){.x = game->player.dir.x + game->player.camera_plane.x * rc->camera.x,
+	.y = game->player.dir.y + game->player.camera_plane.y * rc->camera.x};
 	/*curr_ray_square represent the current square of the map the ray is in.*/
-	rc->curr_ray_square = write_vector(floor(rc->player_pos.x), floor(rc->player_pos.y));
+	rc->curr_ray_square = write_vector(floor(game->player.pos.x), floor(game->player.pos.y));
 }
 
-int	get_texture_x(t_raycaster *rc, t_dda *dda)
+int	get_texture_x(t_raycaster *rc, t_dda *dda, t_game *game)
 {
 	int		texture_x;
 	double	wall_x;
 
 	if (dda->hit_side)//hit a horizontal wall
-		wall_x = (int)rc->player_pos.x + rc->ray_distance_to_wall * rc->ray_dir.x;
+		wall_x = (int)game->player.pos.x + rc->ray_distance_to_wall * rc->ray_dir.x;
 	else
-		wall_x = (int)rc->player_pos.y + rc->ray_distance_to_wall * rc->ray_dir.y;
+		wall_x = (int)game->player.pos.y + rc->ray_distance_to_wall * rc->ray_dir.y;
 	/*To get the offset within the wall square we subtract the integer part (floor wall_x)*/
 	wall_x -= floor(wall_x);
 	/*Get the corresponding position within the texture image by multiplying the fractional part of wall * TEXTURE_WIDTH*/
 	texture_x = (int)(wall_x * (double)TEXTURE_WIDTH);
-	/*Adjust texture_x value depending*/
-	if (!dda->hit_side && rc->ray_dir.x > 0
-		|| dda->hit_side && rc->ray_dir.y < 0)
-		texture_x = TEXTURE_WIDTH - texture_x - 1;
 	return (texture_x);
 }
 
@@ -139,23 +126,21 @@ void	start(t_game *game)
 	size_t		stripe;
 	t_raycaster	rc;
 	t_dda		dda;
-	t_draw		draw_prop;
 
 	stripe = 0;
 	game->data = create_new_image(game->mlx);
-	while (stripe < 4)
+	init_player(game);
+	while (stripe < WIDTH)
 	{
 		/*camera.x is the x-coordinate on the camera plane that the current x-coordinate of the screen represents(0+ for right side, 0 for middle, -0 for left)*/
 		init_rc(game, &rc, stripe);
 		dda.hit_wall = false;
 		dda.length_to_next_step = write_vector(fabs(1 / rc.ray_dir.x), fabs(1 / rc.ray_dir.y));
-		step_in_which_direction(&rc, &dda);
+		step_in_which_direction(&rc, &dda, game);
 		/*After finding in which direction where going we can perform the DDA algorithm (see video in .h file)*/
 		dda_algo(&rc, &dda, (const char **)game->map);
-		draw_prop = get_draw_properties(&rc, &dda);
-		draw_stripe(game,draw_prop, stripe, get_texture_x(&rc, &dda));//this function is supost to do the drawing
+		draw_stripe(game, get_draw_properties(&rc, &dda), stripe, get_texture_x(&rc, &dda, game));
 		stripe += 1;
 	}
-	//draw_minimap(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->data.img, 0, 0);
 }

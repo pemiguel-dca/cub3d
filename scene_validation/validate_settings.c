@@ -6,30 +6,24 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 16:13:57 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/20 14:59:14 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/21 13:58:48 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3d.h"
 
-static bool	validate_textures(char *path)
+static bool	validate_textures(char *path, void *mlx_tmp)
 {
 	int		w;
 	int		h;
-	void	*mlx_tmp;
 	void	*texture;
 
-	mlx_tmp = mlx_init();
 	w = WIDTH;
 	h = HEIGHT;
 	texture = mlx_xpm_file_to_image(mlx_tmp, path, &w, &h);
 	if (!texture)
-	{
-		free(mlx_tmp);
 		return (error_msg(OPEN_TEXTURE));
-	}
-	free(mlx_tmp);
-	free(texture);
+	mlx_destroy_image(mlx_tmp, texture);
 	return (true);
 }
 
@@ -132,7 +126,9 @@ bool	valid_settings(char **buffer)
 {
 	size_t	i;
 	char	**types;
+	void	*mlx_tmp;
 
+	mlx_tmp = mlx_init();
 	types = get_types(buffer);
 	i = 0;
 	while (i < N_SETTINGS)
@@ -140,13 +136,15 @@ bool	valid_settings(char **buffer)
 		if (!validate_types(types) || ((buffer[i][0] == 'F' || buffer[i][0] == 'C')
 			&& !validate_rgb_codes(buffer[i] + 1 + ft_strlen(types[i])))
 			|| ((buffer[i][0] != 'F' && buffer[i][0] != 'C')
-			&& !validate_textures((buffer[i] + ft_strlen(types[i])+ ft_skip_spaces(buffer[i] + ft_strlen(types[i]))))))
+			&& !validate_textures((buffer[i] + ft_strlen(types[i])+ ft_skip_spaces(buffer[i] + ft_strlen(types[i]))), mlx_tmp)))
 		{
+			free(mlx_tmp);
 			free_2Darrays(types);
 			return (false);
 		}
 		i += 1;
 	}
+	free(mlx_tmp);
 	free_2Darrays(types);
 	return (true);
 }

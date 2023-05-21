@@ -16,8 +16,8 @@
 # define HEIGHT 540
 # define WIN_NAME "cub3D"
 
-# define TEXTURE_WIDTH 	64
-# define TEXTURE_HEIGHT 64
+# define TEXTURE_WIDTH 	256
+# define TEXTURE_HEIGHT 256
 
 /*KEY CODES*/
 
@@ -61,6 +61,19 @@ typedef struct
 
 typedef struct
 {
+	double	x;
+	double	y;
+}	t_vec2;
+
+typedef struct
+{
+	t_vec2	dir; //where player is looking
+	t_vec2	pos;
+	t_vec2	camera_plane;
+}	t_player;
+
+typedef struct
+{
 	t_sprites	sprites;
 	char		**map;
 	t_colors	colors;
@@ -68,6 +81,7 @@ typedef struct
 	void		*mlx;
 	void		*win;
 	t_data		data;
+	t_player	player;
 }	t_game;
 
 /*add this to raycaster.h in the end*/
@@ -75,8 +89,8 @@ typedef struct
 typedef struct
 {
 	int	line_height;
-	int	draw_start;
-	int	draw_end;
+	int	start;
+	int	end;
 }	t_draw;
 
 

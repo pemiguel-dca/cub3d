@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 14:28:21 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/20 18:55:44 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/21 16:23:56 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,35 +40,34 @@ t_data	create_textures(void *sprite)
 	return (data);
 }
 
-
-
 int		get_pixel(t_data *img, int x, int y)
 {
 	/*Convert address to integer to access the pixels within the image itself*/
 	int	*pixels;
 
 	pixels = img->addr;
-	printf("pos in pixels array: %d\n", y * TEXTURE_WIDTH + x);
     return (pixels[y * TEXTURE_WIDTH + x]);
 }
 
 void	draw_stripe(t_game *game, t_draw draw_prop, int stripe, int texture_x)
 {
+	/*TODO: make sure we're getting the right pixels from texture*/
 	size_t	i;
 
 	i = 0;
-	while (i < draw_prop.draw_start)
+	while (i < draw_prop.start)
 	{
 		mlx_fill_image_color(&game->data, stripe, i, get_color(game->colors.ceil));
 		i += 1;
 	}
 	/*Draw start until draw end is where we do the drawing of the textures*/
-	while (i < draw_prop.draw_end)
+	while (i < draw_prop.end)
 	{
-		/*Not sure if texture_y is actually correct because, instead of reading all the pixels we are reading the same exact pixel 5 times before advancing to the next one*/
-		double texture_coordinate = ((double)i - draw_prop.draw_start) / draw_prop.line_height;
-		/*Since we want to draw an image that's 64x64 we have to extract the color of each pixel*/ 
+		/*Not sure if texture_y is actually correct*/
+		double texture_coordinate = ((double)i - draw_prop.start) / draw_prop.line_height;
+		/*Since we want to draw an image that's 64x64 we have to extract the color of each pixel*/
 		int texture_y = (int)(texture_coordinate * TEXTURE_HEIGHT);
+		/*TODO: do function to get the right sprite*/
 		mlx_fill_image_color(&game->data, stripe, i, get_pixel(&game->sprites.north, texture_x, texture_y));
 		i += 1;
 	}

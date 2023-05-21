@@ -1,41 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   destroy.c                                          :+:      :+:    :+:   */
+/*   player.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/18 11:04:28 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/21 13:25:53 by pemiguel         ###   ########.fr       */
+/*   Created: 2023/05/21 15:14:30 by pemiguel          #+#    #+#             */
+/*   Updated: 2023/05/21 15:31:37 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#ifndef PLAYER_H
+# define PLAYER_H
 
-void	free_2Darrays(char **array)
+#include "cub3d.h"
+#include "raycaster.h"
+
+static inline t_vec2	player_pos(const char **map)
 {
 	size_t	i;
+	size_t	j;
 
-	if (!array)
-		return ;
 	i = 0;
-	while (array[i])
+	while (map[i])
 	{
-		free(array[i]);
+		j = 0;
+		while (map[i][j])
+		{
+			if (is_cardinal_direction(map[i][j]))
+				return ((t_vec2){.x = j, .y = i});
+			j += 1;
+		}
 		i += 1;
 	}
-	free(array);
+	return ((t_vec2){.x = 0, .y = 0});
 }
 
-void	free_game(t_game *game)
-{
-	if (game->map)
-		free_2Darrays(game->map);
-	if (game->mlx && game->win)
-	{
-		mlx_destroy_window(game->mlx, game->win);
-		free(game->mlx);
-	}
+void	init_player(t_game *game);
 
-}
-
+#endif
