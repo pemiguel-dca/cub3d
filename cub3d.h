@@ -129,7 +129,7 @@ void	mlx_fill_image_color(t_data *data, int w, int h, int color);
 t_data	create_new_image(void *mlx);
 t_data	create_textures(void *sprite);
 void	draw(t_game *game, int x, int y, int color);
-void	draw_stripe(t_game *game, t_draw draw_prop, int stripe, int x);
+void	draw_stripe(t_game *game, t_draw draw_prop, size_t stripe, size_t texture_x);
 void	draw_minimap(t_game *game);
 
 static inline	int get_color(t_color color)

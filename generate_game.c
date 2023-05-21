@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/21 13:48:56 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/21 19:58:52 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	get_cardinal_direction(const char **map)
 	return ('\0');
 }
 
-static void	init_sprites(t_game *game, const char *c_dir, const char *path)
+static void	init_sprites(t_game *game, char *c_dir, char *path)
 {
 	int		w;
 	int		h;
@@ -90,6 +90,6 @@ t_game	generate_game(char **buffer)
 		settings_i += 1;
 	}
 	game.map = buffer;
-	game.cardinal_direction = get_cardinal_direction(buffer);
+	game.cardinal_direction = get_cardinal_direction((const char **)buffer);
 	return (game);
 }

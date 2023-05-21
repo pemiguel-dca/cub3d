@@ -6,14 +6,14 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:05:05 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/21 16:49:39 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/21 19:59:30 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycaster.h"
 #include "cub3d.h"
 
-void	__debug_map(const char **map)
+void	__debug_map(char **map)
 {
 	for (int i = 0; map[i]; i += 1)
 		printf("%s\n", map[i]);

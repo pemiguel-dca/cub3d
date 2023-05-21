@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 12:07:37 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/21 16:22:50 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/21 20:19:56 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ t_draw	get_draw_properties(t_raycaster *rc, t_dda *dda)
 {
 	t_draw	draw;
 
-	/*Calculate the ray distance to the wall that was hit, depending on which side*/
+	/*Calculate the ray distance to the wall that was hit, depending on which side
+	we do this calculation (dda->length_to_first_step.x(y) - dda->length_to_next_step.x(y))
+	because in the dda algo we go one step further in a wall*/
 	if (dda->hit_side == 0)
 		rc->ray_distance_to_wall = dda->length_to_first_step.x - dda->length_to_next_step.x;
 	else
@@ -40,20 +42,15 @@ t_draw	get_draw_properties(t_raycaster *rc, t_dda *dda)
 void	dda_algo(t_raycaster *rc, t_dda *dda, const char **map)
 {
 	/*Basically we will step in the due direction until we hit a wall (again see the video for deeper understanding)*/
-
 	while (!dda->hit_wall)
 	{
-		/*Here we will see which step is bigger and take that respective step*/
-		/*So in this case we will take a step in x direction
-		If x side of square was it then hit_side = 0, if y side was hit, hit_side = 1*/
-
+		/*If x side of square was it then hit_side = 0, if y side was hit, hit_side = 1*/
 		if (dda->length_to_first_step.x < dda->length_to_first_step.y)
 		{
 			dda->length_to_first_step.x += dda->length_to_next_step.x;
 			rc->curr_ray_square.x += dda->step.x;
 			dda->hit_side = 0;
 		}
-		/*Step in y direction*/
 		else
 		{
 			dda->length_to_first_step.y += dda->length_to_next_step.y;
@@ -69,8 +66,7 @@ void	step_in_which_direction(t_raycaster *rc, t_dda *dda, t_game *game)
 {
 	/*This function will calculate the direction of step and find the length to the first step
 	If the ray direction has a negative x component, step.x is -1, if it as a positive x-component, step.x is 1,
-	the same goes for the y component*/
-
+	vice-versa for y component*/
 	if (rc->ray_dir.x > 0)
 	{
 		dda->step.x = 1;
@@ -105,9 +101,9 @@ static void	init_rc(t_game *game, t_raycaster *rc, size_t stripe)
 	rc->curr_ray_square = write_vector(floor(game->player.pos.x), floor(game->player.pos.y));
 }
 
-int	get_texture_x(t_raycaster *rc, t_dda *dda, t_game *game)
+size_t	get_texture_x(t_raycaster *rc, t_dda *dda, t_game *game)
 {
-	int		texture_x;
+	size_t	texture_x;
 	double	wall_x;
 
 	if (dda->hit_side)//hit a horizontal wall
@@ -117,7 +113,7 @@ int	get_texture_x(t_raycaster *rc, t_dda *dda, t_game *game)
 	/*To get the offset within the wall square we subtract the integer part (floor wall_x)*/
 	wall_x -= floor(wall_x);
 	/*Get the corresponding position within the texture image by multiplying the fractional part of wall * TEXTURE_WIDTH*/
-	texture_x = (int)(wall_x * (double)TEXTURE_WIDTH);
+	texture_x = (wall_x * TEXTURE_WIDTH);
 	return (texture_x);
 }
 
@@ -132,7 +128,6 @@ void	start(t_game *game)
 	init_player(game);
 	while (stripe < WIDTH)
 	{
-		/*camera.x is the x-coordinate on the camera plane that the current x-coordinate of the screen represents(0+ for right side, 0 for middle, -0 for left)*/
 		init_rc(game, &rc, stripe);
 		dda.hit_wall = false;
 		dda.length_to_next_step = write_vector(fabs(1 / rc.ray_dir.x), fabs(1 / rc.ray_dir.y));

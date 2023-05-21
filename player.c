@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 14:10:41 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/21 16:47:49 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/21 20:14:29 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,12 @@ static void	west_pov(t_player *player)
 	player->camera_plane = write_vector(0, -0.5);
 }
 
-/*Do not call in the raycaster because when player moves certain variables will be modified,
-by calling this in the raycaster, the player will have the same 'infos' all the time*/
 void	init_player(t_game *game)
 {
 	game->player.pos = player_pos((const char **)game->map);
 	/*Supostamente tens de adicionar 0.5 (neste caso, porque decidimos que o player's pov vai ser 50) ao player_pos(double)
 	porque senao ele fica sempre com a posicao do jogador no ecra (int)
-	Ao modificar o valor que estamos a adicionar o mapa muda completamente diferente*/
+	Ao modificar o valor que estamos a adicionar o mapa muda completamente*/
 	add_to_vector(&game->player.pos, 0.5);
 	if (game->cardinal_direction == 'N')
 		north_pov(&game->player);
