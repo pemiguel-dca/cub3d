@@ -6,11 +6,13 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 14:28:21 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/21 20:10:39 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/21 22:10:17 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+/*TODO: (talvez seja demais), verificar se todas as imagens tem o mesmo tamanho pois estamos a usar uma Macro para a width e height*/
 
 void	mlx_fill_image_color(t_data *data, int w, int h, int color)
 {
@@ -49,13 +51,7 @@ int		get_pixel(t_data *img, int x, int y)
     return (pixels[y * TEXTURE_WIDTH + x]);
 }
 
-/*
-t_data	*get_respective_texture(t_game *game, t_raycaster *rc, size_t hit_side)
-{
-}
-*/
-
-void	draw_stripe(t_game *game, t_draw draw_prop, size_t stripe, size_t texture_x)
+void	draw_stripe(t_game *game, t_draw draw_prop, size_t stripe, size_t texture_x, t_data *texture)
 {
 	size_t	i;
 	size_t	texture_y;
@@ -70,8 +66,7 @@ void	draw_stripe(t_game *game, t_draw draw_prop, size_t stripe, size_t texture_x
 	while (i < draw_prop.end)
 	{
 		texture_y = ((double)i - draw_prop.start) / draw_prop.line_height * TEXTURE_HEIGHT;
-		/*TODO: do function to get the right sprite*/
-		mlx_fill_image_color(&game->data, stripe, i, get_pixel(&game->sprites.north, texture_x, texture_y));
+		mlx_fill_image_color(&game->data, stripe, i, get_pixel(texture, texture_x, texture_y));
 		i += 1;
 	}
 	while (i < HEIGHT)

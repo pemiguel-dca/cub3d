@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 12:07:37 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/21 20:19:56 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/21 21:39:07 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,18 @@ size_t	get_texture_x(t_raycaster *rc, t_dda *dda, t_game *game)
 	return (texture_x);
 }
 
+t_data	*get_respective_texture(t_game *game, t_vec2 ray_dir, size_t hit_side)
+{
+	if (hit_side == 0 && ray_dir.x < 0)
+		return (&game->sprites.west);
+	else if (hit_side == 0 && ray_dir.x > 0)
+		return (&game->sprites.east);
+	else if (hit_side == 1 && ray_dir.y < 0)
+		return (&game->sprites.north);
+	else
+		return (&game->sprites.south);
+}
+
 void	start(t_game *game)
 {
 	size_t		stripe;
@@ -134,7 +146,7 @@ void	start(t_game *game)
 		step_in_which_direction(&rc, &dda, game);
 		/*After finding in which direction where going we can perform the DDA algorithm (see video in .h file)*/
 		dda_algo(&rc, &dda, (const char **)game->map);
-		draw_stripe(game, get_draw_properties(&rc, &dda), stripe, get_texture_x(&rc, &dda, game));
+		draw_stripe(game, get_draw_properties(&rc, &dda), stripe, get_texture_x(&rc, &dda, game), get_respective_texture(game, rc.ray_dir, dda.hit_side));
 		stripe += 1;
 	}
 	mlx_put_image_to_window(game->mlx, game->win, game->data.img, 0, 0);

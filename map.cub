@@ -1,4 +1,4 @@
-NO ./imgs/test_pixels.xpm
+NO ./imgs/wall2.xpm
 WE ./imgs/wall.xpm
 SO ./imgs/wall2.xpm
 EA ./imgs/wall.xpm
