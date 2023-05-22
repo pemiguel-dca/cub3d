@@ -96,7 +96,6 @@ typedef struct
 	size_t	y;
 }	t_texture;
 
-
 static inline bool is_cardinal_direction(char c)
 {
 	return (c == 'N' || c == 'S' || c == 'W' || c == 'E');
