@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 14:10:41 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/22 14:41:20 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/22 15:19:09 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 
 static void	north_pov(t_player *player)
 {
-	player->dir = write_vector(0, 1);
+	player->dir = write_vector(0, -1);
 	player->camera_plane = write_vector(0.5, 0);
 }
 
 static void	south_pov(t_player *player)
 {
-	player->dir = write_vector(0, -1);
+	player->dir = write_vector(0, 1);
 	player->camera_plane = write_vector(-0.5, 0);
 }
 

@@ -19,7 +19,7 @@
 
 # define ESC 65307
 # define LEFT_ARROW 65361
-# define RIGTH_ARROW 65363
+# define RIGHT_ARROW 65363
 # define W 119
 # define A 97
 # define S 115
@@ -136,6 +136,11 @@ void	draw_stripe(t_game *game, t_draw draw_prop, size_t stripe, t_texture *textu
 static inline	int get_color(t_color color)
 {
 	return ((color.r << 16) | (color.g << 8) | color.b);
+}
+
+static inline void __debug_vector(const t_vec2 *vec)
+{
+	printf("t_vector{.x = %f, .y = %f}\n", vec->x, vec->y);
 }
 
 #endif // CUB3D_H

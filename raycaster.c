@@ -3,20 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 12:07:37 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/22 14:58:40 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/22 17:33:06 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "player.h"
 #include "texture.h"
-
-static inline void __debug_vector(const t_vec2 *vec)
-{
-	printf("t_vector{.x = %f, .y = %f}\n", vec->x, vec->y);
-}
 
 t_draw	get_draw_properties(t_raycaster *rc, t_dda *dda)
 {
@@ -126,4 +121,5 @@ void	start(t_game *game)
 	}
 	mlx_clear_window(game->mlx, game->win);
 	mlx_put_image_to_window(game->mlx, game->win, game->data.img, 0, 0);
+	mlx_destroy_image(game->mlx, game->data.img);
 }
