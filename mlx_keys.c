@@ -6,7 +6,7 @@
 /*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:00:24 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/22 18:11:41 by pnobre-m         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:50:53 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,29 +37,22 @@ int	keys_pressed(int key, t_game *game)
 		exit(EXIT_SUCCESS);
 	}
 	// TODO W and S aren't working and disregard direction facing
-	else if (key == W)
+	if (key == W)
     {
-        if ((int)game->player.pos.x - 1 > 0
-            && game->map[(int)(game->player.pos.x + game->player.dir.x * MOVE_SPEED)]
-            [(int)game->player.pos.y])
+		printf("'%s'\n", game->map[(int)(game->player.pos.y + game->player.dir.x * MOVE_SPEED)]); // doesn't ever reach 1111111111
+        if (game->map[(int)(game->player.pos.x + game->player.dir.x * MOVE_SPEED)][(int)game->player.pos.y] != '1')
             game->player.pos.x += game->player.dir.x * MOVE_SPEED;
-        if ((int)game->player.pos.y - 1 > 0
-            && game->map[(int)game->player.pos.x]
-            [(int)(game->player.pos.y + game->player.dir.y * MOVE_SPEED)])
+        if (game->map[(int)game->player.pos.x][(int)(game->player.pos.y + game->player.dir.y * MOVE_SPEED)] != '1')
             game->player.pos.y += game->player.dir.y * MOVE_SPEED;
     }
-    else if (key == S)
+    if (key == S)
     {
-        if ((int)game->player.pos.x + 1 < ft_strlen((const char **)game->map[(int)game->player.pos.y])
-            && game->map[(int)(game->player.pos.x + game->player.dir.x * MOVE_SPEED)]
-            [(int)game->player.pos.y])
-            game->player.pos.x -= game->player.dir.x * MOVE_SPEED;
-        if ((int)game->player.pos.y + 1 < get_cols((const char **)game->map)
-            && game->map[(int)game->player.pos.x]
-            [(int)(game->player.pos.y + game->player.dir.y * MOVE_SPEED)])
-            game->player.pos.y -= game->player.dir.y * MOVE_SPEED;
+		if (game->map[(int)(game->player.pos.x - game->player.dir.x * MOVE_SPEED)][(int)game->player.pos.y] != '1')
+            game->player.pos.x += game->player.dir.x * MOVE_SPEED;
+        if (game->map[(int)game->player.pos.x][(int)(game->player.pos.y - game->player.dir.y * MOVE_SPEED)] != '1')
+            game->player.pos.y += game->player.dir.y * MOVE_SPEED;
     }
-	else if (key == LEFT_ARROW)
+	if (key == LEFT_ARROW)
 	{
 		game->player.dir.x = game->player.dir.x * cos(-ROTATION_SPEED)
 		- game->player.dir.y * sin(-ROTATION_SPEED);
@@ -71,7 +64,7 @@ int	keys_pressed(int key, t_game *game)
 		game->player.camera_plane.y = old_camera_plane.x * sin(-ROTATION_SPEED)
 		+ game->player.camera_plane.y * cos(-ROTATION_SPEED);
 	}
-	else if (key == RIGHT_ARROW)
+	if (key == RIGHT_ARROW)
 	{
 		game->player.dir.x = game->player.dir.x * cos(ROTATION_SPEED)
 		- game->player.dir.y * sin(ROTATION_SPEED);
