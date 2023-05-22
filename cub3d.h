@@ -11,13 +11,9 @@
 # include "scene_validation/validate.h"
 # include "error_msg.h"
 
-
 # define WIDTH 960
 # define HEIGHT 540
 # define WIN_NAME "cub3D"
-
-# define TEXTURE_WIDTH 	64
-# define TEXTURE_HEIGHT 64
 
 /*KEY CODES*/
 
@@ -67,7 +63,7 @@ typedef struct
 
 typedef struct
 {
-	t_vec2	dir; //where player is looking
+	t_vec2	dir;
 	t_vec2	pos;
 	t_vec2	camera_plane;
 }	t_player;
@@ -84,7 +80,7 @@ typedef struct
 	t_player	player;
 }	t_game;
 
-/*add this to raycaster.h in the end*/
+/*TODO: put structs in respective files*/
 
 typedef struct
 {
@@ -92,6 +88,13 @@ typedef struct
 	int	start;
 	int	end;
 }	t_draw;
+
+typedef struct
+{
+	t_data	*img;
+	size_t	x;
+	size_t	y;
+}	t_texture;
 
 
 static inline bool is_cardinal_direction(char c)
@@ -104,6 +107,7 @@ static inline bool is_cardinal_direction(char c)
 char	**get_buffer(int fd);
 
 /*generate_game.c*/
+
 void	start_window(t_game *game);
 
 t_game	generate_game(char **buffer);
@@ -127,10 +131,7 @@ void	free_game(t_game *game);
 
 void	mlx_fill_image_color(t_data *data, int w, int h, int color);
 t_data	create_new_image(void *mlx);
-t_data	create_textures(void *sprite);
-void	draw(t_game *game, int x, int y, int color);
-void	draw_stripe(t_game *game, t_draw draw_prop, size_t stripe, size_t texture_x, t_data *texture);
-void	draw_minimap(t_game *game);
+void	draw_stripe(t_game *game, t_draw draw_prop, size_t stripe, t_texture *texture);
 
 static inline	int get_color(t_color color)
 {

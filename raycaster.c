@@ -6,11 +6,12 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 12:07:37 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/21 22:24:43 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/22 14:09:38 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "player.h"
+#include "texture.h"
 
 static inline void __debug_vector(const t_vec2 *vec)
 {
@@ -77,7 +78,7 @@ void	step_in_which_direction(t_raycaster *rc, t_dda *dda, t_game *game)
 		dda->step.x = -1;
 		dda->length_to_first_step.x = ((int)rc->curr_ray_square.x + 1.0f - game->player.pos.x) * dda->length_to_next_step.x;
 	}
-	if (rc->ray_dir.y > 0)
+	if (rc->ray_dir.y < 0)
 	{
 		dda->step.y = -1;
 		dda->length_to_first_step.y = (game->player.pos.y - (int)rc->curr_ray_square.y) * dda->length_to_next_step.y;
@@ -101,43 +102,15 @@ static void	init_rc(t_game *game, t_raycaster *rc, size_t stripe)
 	rc->curr_ray_square = write_vector(floor(game->player.pos.x), floor(game->player.pos.y));
 }
 
-size_t	get_texture_x(t_raycaster *rc, t_dda *dda, t_game *game)
-{
-	size_t	texture_x;
-	double	wall_x;
-
-	if (dda->hit_side)//hit a horizontal wall
-		wall_x = (int)game->player.pos.x + rc->ray_distance_to_wall * rc->ray_dir.x;
-	else
-		wall_x = (int)game->player.pos.y + rc->ray_distance_to_wall * rc->ray_dir.y;
-	/*To get the offset within the wall square we subtract the integer part (floor wall_x)*/
-	wall_x -= floor(wall_x);
-	/*Get the corresponding position within the texture image by multiplying the fractional part of wall * TEXTURE_WIDTH*/
-	texture_x = (wall_x * TEXTURE_WIDTH);
-	return (texture_x);
-}
-
-t_data	*get_respective_texture(t_game *game, t_vec2 ray_dir, size_t hit_side)
-{
-	if (hit_side == 0 && ray_dir.x < 0)
-		return (&game->sprites.west);
-	else if (hit_side == 0 && ray_dir.x > 0)
-		return (&game->sprites.east);
-	else if (hit_side == 1 && ray_dir.y < 0)
-		return (&game->sprites.north);
-	else
-		return (&game->sprites.south);
-}
-
 void	start(t_game *game)
 {
 	size_t		stripe;
 	t_raycaster	rc;
 	t_dda		dda;
+	t_texture	texture;
 
 	stripe = 0;
 	game->data = create_new_image(game->mlx);
-	init_player(game);
 	while (stripe < WIDTH)
 	{
 		init_rc(game, &rc, stripe);
@@ -146,7 +119,9 @@ void	start(t_game *game)
 		step_in_which_direction(&rc, &dda, game);
 		/*After finding in which direction where going we can perform the DDA algorithm (see video in .h file)*/
 		dda_algo(&rc, &dda, (const char **)game->map);
-		draw_stripe(game, get_draw_properties(&rc, &dda), stripe, get_texture_x(&rc, &dda, game), get_respective_texture(game, rc.ray_dir, dda.hit_side));
+		texture = (t_texture){.img = get_respective_texture(game, rc.ray_dir, dda.hit_side),
+		.x = get_texture_x(&rc, &dda, game)};
+		draw_stripe(game, get_draw_properties(&rc, &dda), stripe, &texture);
 		stripe += 1;
 	}
 	mlx_put_image_to_window(game->mlx, game->win, game->data.img, 0, 0);

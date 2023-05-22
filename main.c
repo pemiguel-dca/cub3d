@@ -6,12 +6,13 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 21:05:05 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/21 19:59:30 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/22 12:50:25 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycaster.h"
 #include "cub3d.h"
+#include "player.h"
 
 void	__debug_map(char **map)
 {
@@ -54,6 +55,7 @@ int	main(int argc, char **argv)
 	}
 	//__debug_scene(buffer);
 	game = generate_game(buffer);
+	init_player(&game);
 	start(&game);
 	mlx_key_hook(game.win, &keys_pressed, &game);
 	mlx_hook(game.win, 17, 0, &top_right, &game);

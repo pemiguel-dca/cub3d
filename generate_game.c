@@ -6,11 +6,12 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/21 19:58:52 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/22 12:49:34 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "texture.h"
 
 static char	get_cardinal_direction(const char **map)
 {
