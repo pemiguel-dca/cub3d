@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 12:07:37 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/22 14:09:38 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/22 14:58:40 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,6 @@ void	start(t_game *game)
 		draw_stripe(game, get_draw_properties(&rc, &dda), stripe, &texture);
 		stripe += 1;
 	}
+	mlx_clear_window(game->mlx, game->win);
 	mlx_put_image_to_window(game->mlx, game->win, game->data.img, 0, 0);
 }

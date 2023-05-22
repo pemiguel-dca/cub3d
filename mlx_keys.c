@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:00:24 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/22 13:51:41 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/22 14:59:10 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,6 @@ int	top_right(t_game *game)
 	free_game(game);
 	exit(EXIT_SUCCESS);
 }
-/*
-bool	wall_in_front(t_game *game)
-{
-	if (game->map[(int)game->player.pos.x + game->player.dir.x * MOVE_SPEED][(int)game->player.pos.y] ==)
-}
-*/
 
 int	keys_pressed(int key, t_game *game)
 {
@@ -41,10 +35,12 @@ int	keys_pressed(int key, t_game *game)
 		free_game(game);
 		exit(EXIT_SUCCESS);
 	}
-	/*look right, not correct just testing*/
 	if (key == W)
 	{
-
+		if (game->map[(int)(game->player.pos.x + game->player.dir.x * MOVE_SPEED)][(int)game->player.pos.y])
+			game->player.pos.x += game->player.dir.x * MOVE_SPEED;
+		if (game->map[(int)game->player.pos.x][(int)(game->player.pos.y + game->player.dir.y * MOVE_SPEED)])
+			game->player.pos.y += game->player.dir.y * MOVE_SPEED;
 	}
 	if (key == RIGTH_ARROW)
 	{
@@ -56,7 +52,6 @@ int	keys_pressed(int key, t_game *game)
 		- game->player.camera_plane.y * sin(ROTATION_SPEED);
 		game->player.camera_plane.x += old_camera_plane.x * sin(-ROTATION_SPEED)
 		+ game->player.camera_plane.y * cos(ROTATION_SPEED);
-		//start(game);
 	}
 	start(game);
 	return (0);
