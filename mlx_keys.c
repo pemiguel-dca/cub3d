@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_keys.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pnobre-m <pnobre-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:00:24 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/23 15:02:08 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/23 18:34:37 by pnobre-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,38 +35,35 @@ int	keys_pressed(int key, t_game *game)
 		free_game(game);
 		exit(EXIT_SUCCESS);
 	}
-	// TODO W and S aren't working when changing player's view
+	// finally done
 	if (key == W)
 	{
-		__debug_vector(&game->player.pos);
-		if (game->map[(int)(game->player.pos.y)][(int)(game->player.pos.x - game->player.dir.x * MOVE_SPEED)] != '1')
-			game->player.pos.x -= game->player.dir.x * MOVE_SPEED;
+		if (game->map[(int)(game->player.pos.y)][(int)(game->player.pos.x + game->player.dir.x * MOVE_SPEED)] != '1')
+			game->player.pos.x += game->player.dir.x * MOVE_SPEED;
 		if (game->map[(int)(game->player.pos.y + game->player.dir.y * MOVE_SPEED)][(int)(game->player.pos.x)] != '1')
 			game->player.pos.y += game->player.dir.y * MOVE_SPEED;
 	}
 	if (key == A)
 	{
-		__debug_vector(&game->player.pos);
-		if (game->map[(int)(game->player.pos.y)][(int)(game->player.pos.x - game->player.dir.y * MOVE_SPEED)] != '1')
-			game->player.pos.x -= game->player.dir.y * MOVE_SPEED;
-		if (game->map[(int)(game->player.pos.y + game->player.dir.x * MOVE_SPEED)][(int)(game->player.pos.x)] != '1')
-			game->player.pos.y += game->player.dir.x * MOVE_SPEED;
+		if (game->map[(int)(game->player.pos.y)][(int)(game->player.pos.x + game->player.dir.y * MOVE_SPEED)] != '1')
+			game->player.pos.x += game->player.dir.y * MOVE_SPEED;
+		if (game->map[(int)(game->player.pos.y - game->player.dir.x * MOVE_SPEED)][(int)(game->player.pos.x)] != '1')
+			game->player.pos.y -= game->player.dir.x * MOVE_SPEED;
+
 	}
 	if (key == S)
 	{
-		__debug_vector(&game->player.pos);
-		if (game->map[(int)(game->player.pos.y)][(int)(game->player.pos.x + game->player.dir.x * MOVE_SPEED)] != '1')
-			game->player.pos.x += game->player.dir.x * MOVE_SPEED;
+		if (game->map[(int)(game->player.pos.y)][(int)(game->player.pos.x - game->player.dir.x * MOVE_SPEED)] != '1')
+			game->player.pos.x -= game->player.dir.x * MOVE_SPEED;
 		if (game->map[(int)(game->player.pos.y - game->player.dir.y * MOVE_SPEED)][(int)(game->player.pos.x)] != '1')
 			game->player.pos.y -= game->player.dir.y * MOVE_SPEED;
 	}
 	if (key == D)
 	{
-		__debug_vector(&game->player.pos);
-		if (game->map[(int)(game->player.pos.y)][(int)(game->player.pos.x + game->player.dir.y * MOVE_SPEED)] != '1')
-			game->player.pos.x += game->player.dir.y * MOVE_SPEED;
-		if (game->map[(int)(game->player.pos.y - game->player.dir.x * MOVE_SPEED)][(int)(game->player.pos.x)] != '1')
-			game->player.pos.y -= game->player.dir.x * MOVE_SPEED;
+		if (game->map[(int)(game->player.pos.y)][(int)(game->player.pos.x - game->player.dir.y * MOVE_SPEED)] != '1')
+			game->player.pos.x -= game->player.dir.y * MOVE_SPEED;
+		if (game->map[(int)(game->player.pos.y + game->player.dir.x * MOVE_SPEED)][(int)(game->player.pos.x)] != '1')
+			game->player.pos.y += game->player.dir.x * MOVE_SPEED;
 	}
 	if (key == LEFT_ARROW)
 	{
