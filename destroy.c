@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 11:04:28 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/21 13:25:53 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/23 14:55:28 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,5 @@ void	free_game(t_game *game)
 		mlx_destroy_window(game->mlx, game->win);
 		free(game->mlx);
 	}
-
 }
 

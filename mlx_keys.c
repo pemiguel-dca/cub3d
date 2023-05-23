@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:00:24 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/23 12:38:50 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/23 15:02:08 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 #include "raycaster.h"
 #include <math.h>
 
-#define ROTATION_SPEED 0.1
-#define MOVE_SPEED 0.1
+#define ROTATION_SPEED 0.1f
+#define MOVE_SPEED 0.1f
 
 int	top_right(t_game *game)
 {
