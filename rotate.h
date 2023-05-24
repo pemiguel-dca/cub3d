@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   rotate.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/12 18:08:50 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/24 12:40:53 by pemiguel         ###   ########.fr       */
+/*   Created: 2023/05/24 12:49:16 by pemiguel          #+#    #+#             */
+/*   Updated: 2023/05/24 13:01:31 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef ROTATE_H
+# define ROTATE_H
 
-bool	ft_isspace(char c)
-{
-	return (c == ' ' || c == '	');
-}
+# define ROTATION_SPEED 0.1
+
+# include "cub3d.h"
+# include <math.h>
+
+void	rotate_left(t_game *game, t_vec2 old_player_dir,
+			t_vec2 old_camera_plane);
+void	rotate_right(t_game *game, t_vec2 old_player_dir,
+			t_vec2 old_camera_plane);
+
+#endif

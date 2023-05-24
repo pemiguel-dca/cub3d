@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:56:03 by pnobre-m          #+#    #+#             */
-/*   Updated: 2023/05/22 12:49:34 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/24 12:29:40 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,13 @@ static void	init_colors(t_game *game, char *codes, char type)
 	char	**rgb_codes;
 
 	rgb_codes = ft_split(codes, ',');
-	color = (t_color){ft_atoi(rgb_codes[0]), ft_atoi(rgb_codes[1]), ft_atoi(rgb_codes[2])};
+	color = (t_color){ft_atoi(rgb_codes[0]), ft_atoi(rgb_codes[1]),
+		ft_atoi(rgb_codes[2])};
 	if (type == 'C')
 		game->colors.ceil = color;
 	else if (type == 'F')
 		game->colors.floor = color;
-	free_2Darrays(rgb_codes);
+	free_darrays(rgb_codes);
 }
 
 t_game	generate_game(char **buffer)
@@ -86,7 +87,7 @@ t_game	generate_game(char **buffer)
 			init_colors(&game, split[1], *split[0]);
 		else
 			init_sprites(&game, split[0], split[1]);
-		free_2Darrays(split);
+		free_darrays(split);
 		buffer += 1;
 		settings_i += 1;
 	}

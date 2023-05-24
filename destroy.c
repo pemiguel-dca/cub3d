@@ -6,13 +6,13 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 11:04:28 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/23 14:55:28 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/24 12:28:44 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	free_2Darrays(char **array)
+void	free_darrays(char **array)
 {
 	size_t	i;
 
@@ -30,11 +30,10 @@ void	free_2Darrays(char **array)
 void	free_game(t_game *game)
 {
 	if (game->map)
-		free_2Darrays(game->map);
+		free_darrays(game->map);
 	if (game->mlx && game->win)
 	{
 		mlx_destroy_window(game->mlx, game->win);
 		free(game->mlx);
 	}
 }
-

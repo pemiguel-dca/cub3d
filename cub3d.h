@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/09 12:24:18 by pemiguel          #+#    #+#             */
+/*   Updated: 2023/05/24 12:55:44 by pemiguel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -25,7 +37,7 @@
 # define S 115
 # define D 100
 
-typedef struct
+typedef struct data
 {
 	void	*img;
 	char	*addr;
@@ -34,14 +46,14 @@ typedef struct
 	int		endian;
 }	t_data;
 
-typedef struct
+typedef struct color
 {
 	unsigned char	r;
 	unsigned char	g;
 	unsigned char	b;
 }	t_color;
 
-typedef struct
+typedef struct sprites
 {
 	t_data	north;
 	t_data	east;
@@ -49,26 +61,26 @@ typedef struct
 	t_data	west;
 }	t_sprites;
 
-typedef struct
+typedef struct colors
 {
 	t_color	ceil;
 	t_color	floor;
 }	t_colors;
 
-typedef struct
+typedef struct vec2
 {
 	double	x;
 	double	y;
 }	t_vec2;
 
-typedef struct
+typedef struct player
 {
 	t_vec2	dir;
 	t_vec2	pos;
 	t_vec2	camera_plane;
 }	t_player;
 
-typedef struct
+typedef struct game
 {
 	t_sprites	sprites;
 	char		**map;
@@ -80,23 +92,21 @@ typedef struct
 	t_player	player;
 }	t_game;
 
-/*TODO: put structs in respective files*/
-
-typedef struct
+typedef struct draw
 {
 	int	line_height;
 	int	start;
 	int	end;
 }	t_draw;
 
-typedef struct
+typedef struct texture
 {
 	t_data	*img;
 	size_t	x;
 	size_t	y;
 }	t_texture;
 
-static inline bool is_cardinal_direction(char c)
+static inline bool	is_cardinal_direction(char c)
 {
 	return (c == 'N' || c == 'S' || c == 'W' || c == 'E');
 }
@@ -118,28 +128,24 @@ static inline bool	is_color(char c)
 
 /*mlx_keys.c*/
 
-int		top_right(t_game *game);
+int		exit_game(t_game *game);
 int		keys_pressed(int key, t_game *game);
 
 /*destroy.c*/
 
-void	free_2Darrays(char **stuff);
+void	free_darrays(char **stuff);
 void	free_game(t_game *game);
 
 /*img.c*/
 
 void	mlx_fill_image_color(t_data *data, int w, int h, int color);
 t_data	create_new_image(void *mlx);
-void	draw_stripe(t_game *game, t_draw draw_prop, size_t stripe, t_texture *texture);
+void	draw_stripe(t_game *game, t_draw draw_prop, size_t stripe,
+						t_texture *texture);
 
-static inline	int get_color(t_color color)
+static inline	int	get_color(t_color color)
 {
 	return ((color.r << 16) | (color.g << 8) | color.b);
-}
-
-static inline void __debug_vector(const t_vec2 *vec)
-{
-	printf("t_vector{.x = %f, .y = %f}\n", vec->x, vec->y);
 }
 
 #endif // CUB3D_H

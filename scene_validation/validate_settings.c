@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 16:13:57 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/21 13:58:48 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/24 12:27:57 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,6 @@ static bool	validate_textures(char *path, void *mlx_tmp)
 	return (true);
 }
 
-static bool	only_digits(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] && ft_isspace(str[i]))
-		i += 1;
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (false);
-		i += 1;
-	}
-	return (true);
-}
-
 static bool	validate_types(char **settings)
 {
 	t_validate	val;
@@ -52,13 +36,13 @@ static bool	validate_types(char **settings)
 	val = (t_validate){.no = 0, .so = 0, .we = 0, .ea = 0, .f = 0, .c = 0};
 	while (settings[i])
 	{
-		if (ft_strcmp(settings[i], "NO") == 0 || (ft_strcmp(settings[i], "N") == 0 && ft_strlen(settings[i]) == 1))
+		if (ft_strcmp(settings[i], "NO") == 0)
 			val.no += 1;
-		else if (ft_strcmp(settings[i], "SO") == 0 || (ft_strcmp(settings[i], "S") == 0 && ft_strlen(settings[i]) == 1))
+		else if (ft_strcmp(settings[i], "SO") == 0)
 			val.so += 1;
-		else if (ft_strcmp(settings[i], "WE") == 0 || (ft_strcmp(settings[i], "W") == 0 && ft_strlen(settings[i]) == 1))
+		else if (ft_strcmp(settings[i], "WE") == 0)
 			val.we += 1;
-		else if (ft_strcmp(settings[i], "EA") == 0 || (ft_strcmp(settings[i], "E") == 0 && ft_strlen(settings[i]) == 1))
+		else if (ft_strcmp(settings[i], "EA") == 0)
 			val.ea += 1;
 		else if (ft_strcmp(settings[i], "F") == 0)
 			val.f += 1;
@@ -84,25 +68,15 @@ static bool	validate_rgb_codes(char *str)
 		if (ft_atoi(rgb_codes[i]) < 0 || ft_atoi(rgb_codes[i]) > 255
 			|| !only_digits(rgb_codes[i]))
 		{
-			free_2Darrays(rgb_codes);
+			free_darrays(rgb_codes);
 			return (error_msg(RGB_FORMAT));
 		}
 		i += 1;
 	}
-	free_2Darrays(rgb_codes);
+	free_darrays(rgb_codes);
 	if (i != 3)
 		return (error_msg(RGB_FORMAT));
 	return (true);
-}
-
-static size_t	get_len(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] && !ft_isspace(str[i]))
-		i += 1;
-	return (i);
 }
 
 static char	**get_types(char **settings)
@@ -133,18 +107,20 @@ bool	valid_settings(char **buffer)
 	i = 0;
 	while (i < N_SETTINGS)
 	{
-		if (!validate_types(types) || ((buffer[i][0] == 'F' || buffer[i][0] == 'C')
+		if (!validate_types(types) || ((buffer[i][0] == 'F'
+				|| buffer[i][0] == 'C')
 			&& !validate_rgb_codes(buffer[i] + 1 + ft_strlen(types[i])))
 			|| ((buffer[i][0] != 'F' && buffer[i][0] != 'C')
-			&& !validate_textures((buffer[i] + ft_strlen(types[i])+ ft_skip_spaces(buffer[i] + ft_strlen(types[i]))), mlx_tmp)))
+			&& !validate_textures((buffer[i] + ft_strlen(types[i])
+			+ ft_skip_spaces(buffer[i] + ft_strlen(types[i]))), mlx_tmp)))
 		{
 			free(mlx_tmp);
-			free_2Darrays(types);
+			free_darrays(types);
 			return (false);
 		}
 		i += 1;
 	}
 	free(mlx_tmp);
-	free_2Darrays(types);
+	free_darrays(types);
 	return (true);
 }

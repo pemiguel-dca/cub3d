@@ -1,41 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player.h                                           :+:      :+:    :+:   */
+/*   map_info.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/21 15:14:30 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/24 12:32:05 by pemiguel         ###   ########.fr       */
+/*   Created: 2023/05/24 12:22:36 by pemiguel          #+#    #+#             */
+/*   Updated: 2023/05/24 12:22:57 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PLAYER_H
-# define PLAYER_H
+#include "validate.h"
 
-# include "cub3d.h"
-# include "raycaster.h"
-
-static inline t_vec2	player_pos(const char **map)
+size_t	get_cols(const char **map)
 {
 	size_t	i;
-	size_t	j;
 
 	i = 0;
 	while (map[i])
-	{
-		j = 0;
-		while (map[i][j])
-		{
-			if (is_cardinal_direction(map[i][j]))
-				return ((t_vec2){.x = j, .y = i});
-			j += 1;
-		}
 		i += 1;
-	}
-	return ((t_vec2){.x = 0, .y = 0});
+	return (i);
 }
 
-void	init_player(t_game *game);
+size_t	get_first_occur_row(const char **map, size_t row)
+{
+	size_t	i;
 
-#endif
+	i = 0;
+	while (map[row][i] && ft_isspace(map[row][i]))
+		i += 1;
+	return (i);
+}
+
+size_t	get_last_occur_row(const char **map, size_t row)
+{
+	size_t	i;
+
+	i = ft_strlen(map[row]) - 1;
+	while (map[row][i] && ft_isspace(map[row][i]))
+		i -= 1;
+	return (i);
+}

@@ -1,13 +1,13 @@
-SRCS=main.c destroy.c mlx_keys.c \
+SRCS=main.c destroy.c mlx_keys.c move.c rotate.c \
 		generate_buffer.c generate_game.c \
-		scene_validation/validate_settings.c scene_validation/validate.c scene_validation/validate_map.c \
+		scene_validation/validate_settings.c scene_validation/validate.c scene_validation/validate_map.c scene_validation/map_info.c\
 		raycaster.c img.c player.c texture.c
 
 
+CFLAGS=-Wall -Wextra -Werror -fsanitize=leak
 OBJS=$(SRCS:.c=.o)
 
 CC=cc
-C_FLAGS=-Wall -Wextra -Werror -fsanitize=leak
 MLX_FLAGS=-L mlx -lmlx -Ilmlx -lXext -lX11 -lbsd -lm
 RM=rm -f
 LIBFT=libft/libft.a
@@ -18,7 +18,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(MAKE) -C libft
 	$(MAKE) -C mlx
-	$(CC) $(C_FLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
 
 clean:
 	$(MAKE) clean -C libft

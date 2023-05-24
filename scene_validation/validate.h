@@ -6,7 +6,7 @@
 /*   By: pemiguel <pemiguel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 12:30:08 by pemiguel          #+#    #+#             */
-/*   Updated: 2023/05/21 13:49:04 by pemiguel         ###   ########.fr       */
+/*   Updated: 2023/05/24 12:23:16 by pemiguel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # define EXTENSION "cub"
 # define N_SETTINGS 6
 
-typedef struct
+typedef struct validate
 {
 	int	no;
 	int	so;
@@ -33,38 +33,28 @@ typedef struct
 	int	c;
 }	t_validate;
 
+size_t	get_cols(const char **map);
+size_t	get_first_occur_row(const char **map, size_t row);
+size_t	get_last_occur_row(const char **map, size_t row);
+
 /*validate_map.c*/
 
 bool	valid_map(const char **map);
+bool	right_wall(const char **map, size_t i, size_t j);
+bool	left_wall(const char **map, size_t i, size_t j);
+bool	down_wall(const char **map, size_t i, size_t j);
+bool	up_wall(const char **map, int i, size_t j);
 
-static inline size_t	get_cols(const char **map)
+static inline bool	surrounded_by_walls(const char **map, size_t y, size_t x)
 {
-	size_t	i;
-
-	i = 0;
-	while (map[i])
-		i += 1;
-	return (i);
-}
-
-static inline size_t	get_first_occur_row(const char **map, size_t row)
-{
-	size_t	i;
-
-	i = 0;
-	while (map[row][i] && ft_isspace(map[row][i]))
-		i += 1;
-	return (i);
-}
-
-static inline size_t	get_last_occur_row(const char **map, size_t row)
-{
-	size_t	i;
-
-	i = ft_strlen(map[row]) - 1;
-	while (map[row][i] && ft_isspace(map[row][i]))
-		i -= 1;
-	return (i);
+	if (x == get_first_occur_row(map, y)
+		|| x == get_last_occur_row(map, y)
+		|| y == 0 || y == get_cols(map) - 1)
+		return (false);
+	if (!right_wall(map, y, x) || !left_wall(map, y, x)
+		|| !up_wall(map, y, x) || !down_wall(map, y, x))
+		return (false);
+	return (true);
 }
 
 /*validate.c*/
@@ -83,6 +73,32 @@ static inline bool	has_extension(const char *path)
 }
 
 /*validate_settings*/
+
+static inline size_t	get_len(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] && !ft_isspace(str[i]))
+		i += 1;
+	return (i);
+}
+
+static inline bool	only_digits(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] && ft_isspace(str[i]))
+		i += 1;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (false);
+		i += 1;
+	}
+	return (true);
+}
 
 bool	valid_settings(char **buffer);
 
